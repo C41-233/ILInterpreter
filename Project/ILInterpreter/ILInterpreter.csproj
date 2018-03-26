@@ -40,12 +40,16 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Environment\IdGenerator.cs" />
     <Compile Include="Environment\ILEnvironment.cs" />
+    <Compile Include="Environment\TypeSystem\AssemblyName.cs" />
     <Compile Include="Environment\TypeSystem\CLRType.cs" />
-    <Compile Include="Environment\TypeSystem\TypeSymbol.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Environment\TypeSystem\ILType.cs" />
-    <Compile Include="Support\FastList.cs" />
+    <Compile Include="Environment\TypeSystem\TypeName.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Support\FastList_Debug.cs" />
+    <Compile Include="Support\ListExtends.cs" />
+    <Compile Include="Support\SharedDictionary.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

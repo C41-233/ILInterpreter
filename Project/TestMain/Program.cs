@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using ILInterpreter.Environment;
 
 namespace TestMain
@@ -26,8 +27,15 @@ namespace TestMain
 
         public static void Main(string[] args)
         {
-            var env = ILEnvironment.Create();
-            env.GetType("System.Collections.Generic.Dictionary`2[System.Collections.Generic.Dictionary`2[System.Int32,System.Int32],System.Collections.Generic.Dictionary`2[System.Int32,System.Int32]]");
+            Run(typeof(int*[][,]));
+            Run(typeof(List<List<int>>));
+        }
+
+        private static void Run(Type type)
+        {
+            var env = new ILEnvironment();
+            Console.WriteLine(env.GetType(type).AssemblyQualifiedName);
+            Console.WriteLine(type.AssemblyQualifiedName);
         }
     }
 }

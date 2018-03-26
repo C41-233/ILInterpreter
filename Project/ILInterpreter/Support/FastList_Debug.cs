@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ILInterpreter.Support
 {
@@ -18,6 +17,7 @@ namespace ILInterpreter.Support
         {
             get { return list.Count; }
         }
+
         public T this[int index]
         {
             get { return list[index]; }
@@ -34,20 +34,9 @@ namespace ILInterpreter.Support
             return GetEnumerator();
         }
 
-        public string Join(string seperate, string start, string end)
+        public T[] ToArray()
         {
-            var sb = new StringBuilder();
-            sb.Append(start);
-            for (var i = 0; i < Count; i++)
-            {
-                sb.Append(this[i]);
-                if (i != Count - 1)
-                {
-                    sb.Append(seperate);
-                }
-            }
-            sb.Append(end);
-            return sb.ToString();
+            return list.ToArray();
         }
 
     }

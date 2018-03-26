@@ -1,66 +1,81 @@
 ﻿using System;
-using System.Linq;
+using ILInterpreter.Support;
 
 namespace ILInterpreter.Environment.TypeSystem
 {
     public sealed class CLRType : ILType
     {
 
-        private string symbol;
-        public override string Symbol
+        internal CLRType(Type type, ILEnvironment env) : base(env)
         {
-            get
+            clrType = type;
+            assemblyName = new AssemblyName(type.Assembly.GetName());
+
+            if (type.HasElementType)
             {
-                if (symbol == null)
+                elementType = env.GetType(type.GetElementType());
+            }
+
+            arrayRank = type.IsArray ? type.GetArrayRank() : 0;
+
+            if (type.IsGenericType)
+            {
+                if (!type.IsGenericTypeDefinition)
                 {
-                    symbol = clrType.FullName;
+                    genericTypeDefinition = env.GetType(type.GetGenericTypeDefinition());
                 }
-                return symbol;
+                GenericArgumentsList = new FastList<ILType>();
+                foreach (var generic in type.GetGenericArguments())
+                {
+                    GenericArgumentsList.Add(env.GetType(generic));
+                }
             }
         }
 
-        public override Type Type
+        private readonly Type clrType;
+        public override Type TypeForCLR
         {
             get { return clrType; }
         }
 
-        private readonly Type clrType;
-
-        public CLRType(Type type, ILEnvironment environment) : base(environment)
+        private readonly AssemblyName assemblyName;
+        public override AssemblyName AssemblyName
         {
-            clrType = type;
+            get { return assemblyName; }
         }
 
-        internal override ILType CreatePointerType()
+        private readonly ILType elementType;
+        public override ILType ElementType
         {
-            return new CLRType(clrType.MakePointerType(), Environment)
-            {
-                ElementType = this
-            };
+            get { return elementType; }
         }
 
-        internal override ILType CreateRefType()
+        public override bool IsByRef
         {
-            return new CLRType(clrType.MakeByRefType(), Environment)
-            {
-                ElementType = this
-            };
+            get { return clrType.IsByRef; }
         }
 
-        internal override ILType CreateArrayType(int rank)
+        public override bool IsPointer
         {
-            var clrArrayType = rank == 1 ? clrType.MakeArrayType() : clrType.MakeArrayType(rank);
-            return new CLRType(clrArrayType, Environment)
-            {
-                ElementType = this
-            };
+            get { return clrType.IsPointer; }
         }
 
-        internal override ILType CreateGenericInstance(params ILType[] generics)
+        private readonly int arrayRank;
+        public override int ArrayRank
         {
-            var type = clrType.MakeGenericType(generics.Select(t => t.Type).ToArray());
-            return new CLRType(type, Environment);
+            get { return arrayRank; }
+        }
+
+        public override bool IsGenericTypeDefinition
+        {
+            get { return clrType.IsGenericTypeDefinition; }
+        }
+
+        private readonly ILType genericTypeDefinition;
+
+        public override ILType GenericTypeDefinition
+        {
+            get { return genericTypeDefinition; }
         }
     }
-
 }
