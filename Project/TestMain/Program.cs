@@ -27,15 +27,10 @@ namespace TestMain
 
         public static void Main(string[] args)
         {
-            Run(typeof(int*[][,]));
-            Run(typeof(List<List<int>>));
+            var env = new ILEnvironment();
+            Console.WriteLine(env.GetType(typeof(int*)).AssemblyQualifiedName);
+            Console.WriteLine(env.GetType("System.Int32*"));
         }
 
-        private static void Run(Type type)
-        {
-            var env = new ILEnvironment();
-            Console.WriteLine(env.GetType(type).AssemblyQualifiedName);
-            Console.WriteLine(type.AssemblyQualifiedName);
-        }
     }
 }
