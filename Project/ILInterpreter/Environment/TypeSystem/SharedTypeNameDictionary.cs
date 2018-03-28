@@ -37,6 +37,7 @@ namespace ILInterpreter.Environment.TypeSystem
             return false;
         }
 
+        //todo 挪到env中去，一边解析一边创建类型
         public bool TryGetValue(ITypeSymbol symbol, out ILType type)
         {
             var fullname = symbol.FullName;
@@ -63,10 +64,31 @@ namespace ILInterpreter.Environment.TypeSystem
 
         private static int GetTypeWeakMatchScore(ILType type, ITypeSymbol symbol)
         {
-            var pointerSymbol = symbol as PointerSymbol;
-            if (pointerSymbol != null)
+            var genericSymbol = symbol as GenericSymbol;
+            if (genericSymbol != null)
             {
-                return GetTypeWeakMatchScore(type.ElementType, pointerSymbol.Element);
+                var totalScore = GetTypeWeakMatchScore(type.GenericTypeDefinition, genericSymbol.Element);
+                if (totalScore < 0)
+                {
+                    return totalScore;
+                }
+                var genericArguments = type.GenericArguments;
+                for (var i = 0; i < genericArguments.Length; i++)
+                {
+                    var score = GetTypeWeakMatchScore(genericArguments[i], genericSymbol.GenericParameters[i]);
+                    if (score < 0)
+                    {
+                        return score;
+                    }
+                    totalScore += score;
+                }
+                return totalScore;
+            }
+
+            var componentSymbol = symbol as ComponentSymbol;
+            if (componentSymbol != null)
+            {
+                return GetTypeWeakMatchScore(type.ElementType, componentSymbol.Element);
             }
 
             var nameSymbol = symbol as NameSymbol;

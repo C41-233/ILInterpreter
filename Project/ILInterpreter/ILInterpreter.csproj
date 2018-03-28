@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Environment\IdGenerator.cs" />
     <Compile Include="Environment\ILEnvironment.cs" />
+    <Compile Include="Environment\ILExceptions.cs" />
     <Compile Include="Environment\TypeSystem\AssemblyName.cs" />
     <Compile Include="Environment\TypeSystem\CLRType.cs" />
     <Compile Include="Environment\TypeSystem\ILType.cs" />

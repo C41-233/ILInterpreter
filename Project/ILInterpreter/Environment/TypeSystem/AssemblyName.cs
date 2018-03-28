@@ -1,4 +1,5 @@
-﻿using SystemAssemblyName = System.Reflection.AssemblyName;
+﻿using System.IO;
+using SystemAssemblyName = System.Reflection.AssemblyName;
 
 namespace ILInterpreter.Environment.TypeSystem
 {
@@ -9,7 +10,14 @@ namespace ILInterpreter.Environment.TypeSystem
 
         internal AssemblyName(string assembly)
         {
-            name = new SystemAssemblyName(assembly);
+            try
+            {
+                name = new SystemAssemblyName(assembly);
+            }
+            catch (FileLoadException e)
+            {
+                throw new ILTypeLoadException(assembly, e);
+            }
         }
 
         internal AssemblyName(SystemAssemblyName assembly)

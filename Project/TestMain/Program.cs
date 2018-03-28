@@ -13,7 +13,7 @@ namespace TestMain
 
             public class B
             {
-                
+
             }
 
         }
@@ -28,9 +28,9 @@ namespace TestMain
         public static void Main(string[] args)
         {
             var env = new ILEnvironment();
-            Console.WriteLine(env.GetType(typeof(int*)).AssemblyQualifiedName);
-            Console.WriteLine(env.GetType("System.Int32*"));
-        }
+            var type = env.GetType(typeof(List<List<int>>));
+            Console.WriteLine(type.AssemblyQualifiedName);
 
+        }
     }
 }
