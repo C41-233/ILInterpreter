@@ -29,7 +29,7 @@ namespace TestMain
         {
             var env = new ILEnvironment();
             var type = env.GetType(typeof(List<List<int>>));
-            Console.WriteLine(type.AssemblyQualifiedName);
+            Console.WriteLine(env.GetType("System.Collections.Generic.List`1[[System.Collections.Generic.List`1[System.Int32],mscorlib]],mscorlib"));
 
         }
     }

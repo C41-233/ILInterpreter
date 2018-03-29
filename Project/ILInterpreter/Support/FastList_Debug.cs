@@ -1,12 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace ILInterpreter.Support
 {
-    internal sealed class FastList<T> : IEnumerable<T>
+    internal sealed partial class FastList<T>
     {
 
-        private readonly List<T> list = new List<T>();
+        private readonly List<T> list;
+
+        public FastList()
+        {
+            list = new List<T>();
+        }
+
+        public FastList(int capacity)
+        {
+            list = new List<T>(capacity);
+        }
 
         public void Add(T element)
         {
@@ -27,11 +36,6 @@ namespace ILInterpreter.Support
         public IEnumerator<T> GetEnumerator()
         {
             return list.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         public T[] ToArray()
