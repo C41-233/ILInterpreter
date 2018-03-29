@@ -6,9 +6,9 @@ namespace ILInterpreter.Environment.TypeSystem
     internal static class TypeName
     {
 
-        public static string Parse(ILType type, bool assembly)
+        public static string Parse(ILType type, bool isFullQualifiedName)
         {
-            return Parse(type, assembly, assembly);
+            return Parse(type, false, isFullQualifiedName);
         }
 
         private static string Parse(ILType type, bool partialAssembly, bool assembly)

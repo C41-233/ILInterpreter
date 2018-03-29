@@ -36,9 +36,8 @@ namespace ILInterpreter.Environment
                     return type;
                 }
 
-                type = new CLRType(clrType, this);
-                CacheTypeInternal(type);
-                return type;
+                type = CLRType.Create(clrType, this);
+                return CacheTypeInternal(type);
             }
         }
 
@@ -60,7 +59,7 @@ namespace ILInterpreter.Environment
             }
         }
 
-        private void CacheTypeInternal(ILType type)
+        private ILType CacheTypeInternal(ILType type)
         {
             var clrType = type as CLRType;
             if (clrType != null)
@@ -71,6 +70,7 @@ namespace ILInterpreter.Environment
             }
             IdToType[type.Id] = type;
             NameToTypes.Add(type.FullName, type);
+            return type;
         }
         #endregion
 

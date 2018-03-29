@@ -6,30 +6,35 @@ namespace ILInterpreter.Environment.TypeSystem
     public sealed class CLRType : ILType
     {
 
-        internal CLRType(Type type, ILEnvironment env) : base(env)
+        private CLRType(Type type, ILEnvironment env) : base(env)
         {
             clrType = type;
             assemblyName = new AssemblyName(type.Assembly.GetName());
+        }
 
+        internal static CLRType Create(Type type, ILEnvironment env)
+        {
+            var self = new CLRType(type, env);
             if (type.HasElementType)
             {
-                elementType = env.GetType(type.GetElementType());
+                self.elementType = env.GetType(type.GetElementType());
             }
 
-            arrayRank = type.IsArray ? type.GetArrayRank() : 0;
+            self.arrayRank = type.IsArray ? type.GetArrayRank() : 0;
 
             if (type.IsGenericType)
             {
                 if (!type.IsGenericTypeDefinition)
                 {
-                    genericTypeDefinition = env.GetType(type.GetGenericTypeDefinition());
+                    self.genericTypeDefinition = env.GetType(type.GetGenericTypeDefinition());
                 }
-                GenericArgumentsList = new FastList<ILType>();
+                self.GenericArgumentsList = new FastList<ILType>();
                 foreach (var generic in type.GetGenericArguments())
                 {
-                    GenericArgumentsList.Add(env.GetType(generic));
+                    self.GenericArgumentsList.Add(env.GetType(generic));
                 }
             }
+            return self;
         }
 
         private readonly Type clrType;
@@ -44,23 +49,61 @@ namespace ILInterpreter.Environment.TypeSystem
             get { return assemblyName; }
         }
 
-        private readonly ILType elementType;
+        private ILType elementType;
         public override ILType ElementType
         {
             get { return elementType; }
+        }
+
+        #region Ref
+        private ILType byRefType;
+        internal override ILType CreateByRefType()
+        {
+            var type = clrType.MakeByRefType();
+            var self = new CLRType(type, Environment)
+            {
+                elementType = this,
+            };
+            byRefType = self;
+            return self;
+        }
+
+        public override ILType MakeByRefType()
+        {
+            return byRefType ?? base.MakeByRefType();
         }
 
         public override bool IsByRef
         {
             get { return clrType.IsByRef; }
         }
+        #endregion
+
+        #region Pointer
+        private ILType pointerType;
+        internal override ILType CreatePointerType()
+        {
+            var type = clrType.MakePointerType();
+            var self = new CLRType(type, Environment)
+            {
+                elementType = this
+            };
+            pointerType = self;
+            return self;
+        }
+
+        public override ILType MakePointerType()
+        {
+            return pointerType ?? base.MakePointerType();
+        }
 
         public override bool IsPointer
         {
             get { return clrType.IsPointer; }
         }
+        #endregion
 
-        private readonly int arrayRank;
+        private int arrayRank;
         public override int ArrayRank
         {
             get { return arrayRank; }
@@ -71,7 +114,7 @@ namespace ILInterpreter.Environment.TypeSystem
             get { return clrType.IsGenericTypeDefinition; }
         }
 
-        private readonly ILType genericTypeDefinition;
+        private ILType genericTypeDefinition;
 
         public override ILType GenericTypeDefinition
         {

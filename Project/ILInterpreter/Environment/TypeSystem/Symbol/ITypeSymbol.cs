@@ -7,6 +7,11 @@ namespace ILInterpreter.Environment.TypeSystem.Symbol
 
         public abstract string FullName { get; }
 
+        public string AssemblyQualifiedName
+        {
+            get { return AssemblyName != null ? FullName + AssemblyName : FullName; }
+        }
+
         protected ITypeSymbol(AssemblyName assembly)
         {
             AssemblyName = assembly;

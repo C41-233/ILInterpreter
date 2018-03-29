@@ -28,6 +28,7 @@ namespace ILInterpreter.Environment.TypeSystem
             return FullName;
         }
 
+        #region Name
         public abstract AssemblyName AssemblyName { get; }
 
         private string fullName;
@@ -36,12 +37,17 @@ namespace ILInterpreter.Environment.TypeSystem
             get { return fullName ?? (fullName = TypeName.Parse(this, false)); }
         }
 
-        private string assemblyQualifiedName;
+        private string fullQualifiedName;
+        public string FullQulifiedName
+        {
+            get { return fullQualifiedName ?? (fullQualifiedName = TypeName.Parse(this, true)); }
+        }
 
         public string AssemblyQualifiedName
         {
-            get { return assemblyQualifiedName ?? (assemblyQualifiedName = TypeName.Parse(this, true));}
+            get { return FullQulifiedName + AssemblyName; }
         }
+        #endregion
 
         public abstract ILType ElementType { get; }
 
@@ -50,9 +56,23 @@ namespace ILInterpreter.Environment.TypeSystem
             get { return ElementType != null; }
         }
 
+        #region Ref
+        public virtual ILType MakeByRefType()
+        {
+            return Environment.GetType(FullQulifiedName + "&");
+        }
+        internal abstract ILType CreateByRefType();
         public abstract bool IsByRef { get; }
+        #endregion
 
+        #region Pointer
+        public virtual ILType MakePointerType()
+        {
+            return Environment.GetType(FullQulifiedName + "*");
+        }
+        internal abstract ILType CreatePointerType();
         public abstract bool IsPointer { get; }
+        #endregion
 
         public bool IsArray
         {
@@ -60,6 +80,7 @@ namespace ILInterpreter.Environment.TypeSystem
         }
 
         public abstract int ArrayRank { get; }
+
 
         public abstract bool IsGenericTypeDefinition { get; }
 
