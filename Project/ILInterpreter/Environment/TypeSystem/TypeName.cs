@@ -49,7 +49,7 @@ namespace ILInterpreter.Environment.TypeSystem
             {
                 sb.Append(Parse(type.GenericTypeDefinition, false, assembly));
                 sb.Append('[');
-                foreach (var generic in type.GenericArgumentsList)
+                foreach (var generic in type.GenericArguments)
                 {
                     if (assembly)
                     {

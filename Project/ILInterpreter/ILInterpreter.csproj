@@ -59,10 +59,10 @@
     <Compile Include="Environment\TypeSystem\TypeName.cs" />
     <Compile Include="Environment\TypeSystem\Symbol\TypeSymbol.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Support\EnumerableSupport.cs" />
     <Compile Include="Support\FastList.cs" />
     <Compile Include="Support\FastList_Debug.cs" />
     <Compile Include="Support\IListView.cs" />
-    <Compile Include="Support\ListExtends.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

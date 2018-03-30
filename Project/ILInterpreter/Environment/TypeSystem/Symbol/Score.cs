@@ -20,7 +20,7 @@
                     return Result(out score, -1);
                 }
                 var genericArguments = type.GenericArguments;
-                for (var i = 0; i < genericArguments.Length; i++)
+                for (var i = 0; i < genericArguments.Count; i++)
                 {
                     int genericScore;
                     if (!GetTypeWeakMatchScore(genericArguments[i], genericSymbol.GenericParameters[i], out genericScore))

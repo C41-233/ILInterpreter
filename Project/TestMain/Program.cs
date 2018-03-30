@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using ILInterpreter.Environment;
 
 namespace TestMain
@@ -29,7 +27,15 @@ namespace TestMain
         public static void Main(string[] args)
         {
             var env = new ILEnvironment();
-            Console.WriteLine(env.GetType("System.Collections.Generic.List`1[][,]"));
+            var a = env.GetType(typeof(List<int>));
+            Console.WriteLine(a);
+            var b = env.GetType("System.Collections.Generic.List`1[System.Int32]");
+            Console.WriteLine(b);
+            var c = env.GetType("System.Collections.Generic.List`1").MakeGenericType(env.GetType<int>());
+            Console.WriteLine(c);
+
+            Console.WriteLine(a==b);
+            Console.WriteLine(a == c);
         }
     }
 }

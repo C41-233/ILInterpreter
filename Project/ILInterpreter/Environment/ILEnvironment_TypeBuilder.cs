@@ -72,6 +72,30 @@ namespace ILInterpreter.Environment
                 return CacheTypeInternal(type);
             }
 
+            var genericSymbol = symbol as GenericSymbol;
+            if (genericSymbol != null)
+            {
+                var elementType = GetTypeInternal(genericSymbol.Element);
+                if (elementType == null)
+                {
+                    return null;
+                }
+
+                var genericArugments = new FastList<ILType>(genericSymbol.GenericParameters.Count);
+                foreach (var generic in genericSymbol.GenericParameters)
+                {
+                    var genericType = GetTypeInternal(generic);
+                    if (genericType == null)
+                    {
+                        return null;
+                    }
+                    genericArugments.Add(genericType);
+                }
+
+                var type = elementType.CreateGenericType(genericArugments);
+                return CacheTypeInternal(type);
+            }
+
             var nameSymbol = symbol as NameSymbol;
             if(nameSymbol != null)
             {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using ILInterpreter.Support;
 
 namespace ILInterpreter.Environment.TypeSystem
@@ -29,10 +28,10 @@ namespace ILInterpreter.Environment.TypeSystem
                 {
                     self.genericTypeDefinition = env.GetType(type.GetGenericTypeDefinition());
                 }
-                self.GenericArgumentsList = new FastList<ILType>();
+                self.genericArguments = new FastList<ILType>();
                 foreach (var generic in type.GetGenericArguments())
                 {
-                    self.GenericArgumentsList.Add(env.GetType(generic));
+                    self.genericArguments.Add(env.GetType(generic));
                 }
             }
             return self;
@@ -57,21 +56,14 @@ namespace ILInterpreter.Environment.TypeSystem
         }
 
         #region Ref
-        private ILType byRefType;
-        internal override ILType CreateByRefType()
+        internal override ILType CreateByRefTypeInternal()
         {
             var type = clrType.MakeByRefType();
             var self = new CLRType(type, Environment)
             {
                 elementType = this,
             };
-            byRefType = self;
             return self;
-        }
-
-        public override ILType MakeByRefType()
-        {
-            return byRefType ?? base.MakeByRefType();
         }
 
         public override bool IsByRef
@@ -81,21 +73,14 @@ namespace ILInterpreter.Environment.TypeSystem
         #endregion
 
         #region Pointer
-        private ILType pointerType;
-        internal override ILType CreatePointerType()
+        internal override ILType CreatePointerTypeInternal()
         {
             var type = clrType.MakePointerType();
             var self = new CLRType(type, Environment)
             {
                 elementType = this
             };
-            pointerType = self;
             return self;
-        }
-
-        public override ILType MakePointerType()
-        {
-            return pointerType ?? base.MakePointerType();
         }
 
         public override bool IsPointer
@@ -106,12 +91,11 @@ namespace ILInterpreter.Environment.TypeSystem
 
         #region Array
         private int arrayRank;
-        private Dictionary<int, ILType> arrayTypes;
         public override int ArrayRank
         {
             get { return arrayRank; }
         }
-        internal override ILType CreateArrayType(int rank)
+        internal override ILType CreateArrayTypeInternal(int rank)
         {
             var type = rank == 1 ? clrType.MakeArrayType() : clrType.MakeArrayType(rank);
             var self = new CLRType(type, Environment)
@@ -119,14 +103,11 @@ namespace ILInterpreter.Environment.TypeSystem
                 elementType = this,
                 arrayRank = rank,
             };
-            if (arrayTypes == null)
-            {
-                arrayTypes = new Dictionary<int, ILType>(1);
-            }
-            arrayTypes[rank] = self;
             return self;
         }
         #endregion
+
+        #region Generic
 
         public override bool IsGenericTypeDefinition
         {
@@ -139,5 +120,31 @@ namespace ILInterpreter.Environment.TypeSystem
         {
             get { return genericTypeDefinition; }
         }
+
+        internal override ILType CreateGenericTypeInternal(FastList<ILType> genericArugments)
+        {
+            //todo 处理RuntimeType的情形
+            var genericCLRTypes = new Type[genericArugments.Count];
+            for (var i = 0; i < genericArugments.Count; i++)
+            {
+                var generic = genericArugments[i];
+                var genericCLRType = generic as CLRType;
+                if (genericCLRType != null)
+                {
+                    genericCLRTypes[i] = genericCLRType.clrType;
+                    continue;
+                }
+                throw new NotSupportedException();
+            }
+            var type = clrType.MakeGenericType(genericCLRTypes);
+            var self = new CLRType(type, Environment)
+            {
+                genericTypeDefinition = this,
+                genericArguments = genericArugments,
+            };
+            return self;
+        }
+
+        #endregion
     }
 }
