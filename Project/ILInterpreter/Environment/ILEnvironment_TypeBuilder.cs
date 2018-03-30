@@ -60,10 +60,26 @@ namespace ILInterpreter.Environment
                 return CacheTypeInternal(type);
             }
 
+            var arraySymbol = symbol as ArraySymbol;
+            if (arraySymbol != null)
+            {
+                var element = GetTypeInternal(arraySymbol.Element);
+                if (element == null)
+                {
+                    return null;
+                }
+                var type = element.CreateArrayType(arraySymbol.Rank);
+                return CacheTypeInternal(type);
+            }
+
             var nameSymbol = symbol as NameSymbol;
             if(nameSymbol != null)
             {
                 var clr = Type.GetType(nameSymbol.AssemblyQualifiedName);
+                if (clr == null)
+                {
+                    return null;
+                }
                 var type = CLRType.Create(clr, this);
                 return CacheTypeInternal(type);
             }

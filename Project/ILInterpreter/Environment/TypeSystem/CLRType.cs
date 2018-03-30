@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ILInterpreter.Support;
 
 namespace ILInterpreter.Environment.TypeSystem
@@ -103,11 +104,29 @@ namespace ILInterpreter.Environment.TypeSystem
         }
         #endregion
 
+        #region Array
         private int arrayRank;
+        private Dictionary<int, ILType> arrayTypes;
         public override int ArrayRank
         {
             get { return arrayRank; }
         }
+        internal override ILType CreateArrayType(int rank)
+        {
+            var type = rank == 1 ? clrType.MakeArrayType() : clrType.MakeArrayType(rank);
+            var self = new CLRType(type, Environment)
+            {
+                elementType = this,
+                arrayRank = rank,
+            };
+            if (arrayTypes == null)
+            {
+                arrayTypes = new Dictionary<int, ILType>(1);
+            }
+            arrayTypes[rank] = self;
+            return self;
+        }
+        #endregion
 
         public override bool IsGenericTypeDefinition
         {

@@ -81,7 +81,6 @@ namespace ILInterpreter.Environment.TypeSystem
 
         public abstract int ArrayRank { get; }
 
-
         public abstract bool IsGenericTypeDefinition { get; }
 
         public bool IsGenericType
@@ -97,5 +96,6 @@ namespace ILInterpreter.Environment.TypeSystem
             get { return GenericArgumentsList != null ? GenericArgumentsList.ToArray() : null; }
         }
 
+        internal abstract ILType CreateArrayType(int rank);
     }
 }

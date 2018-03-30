@@ -11,8 +11,6 @@ namespace ILInterpreter.Environment
         private readonly Dictionary<Type, ILType> TypeToILType = new Dictionary<Type, ILType>();
         private readonly Dictionary<int, ILType> IdToType = new Dictionary<int, ILType>();
         private readonly TypeNameDictionary NameToTypes = new TypeNameDictionary();
-
-        private readonly object _lock = new object();
         #endregion
 
         #region 类型系统
@@ -28,7 +26,7 @@ namespace ILInterpreter.Environment
             {
                 return null;
             }
-            lock (_lock)
+            lock (this)
             {
                 ILType type;
                 if (TypeToILType.TryGetValue(clrType, out type))
@@ -47,7 +45,7 @@ namespace ILInterpreter.Environment
             {
                 return null;
             }
-            lock (_lock)
+            lock (this)
             {
                 ILType type;
                 if (NameToTypes.TryGetValue(fullname, out type))
