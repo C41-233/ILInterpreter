@@ -1,17 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ILInterpreter.Support;
 
 namespace ILInterpreter.Environment.TypeSystem
 {
-    public abstract class ILType
+    public abstract partial class ILType
     {
 
+        /// <summary>
+        /// 类型token，与GetHashCode返回值一致
+        /// </summary>
         public int Id { get; private set; }
 
         public ILEnvironment Environment { get; private set; }
 
+        /// <summary>
+        /// 在解释执行时实际运行的CLR类型，这不代表该类型所表示的类型
+        /// </summary>
         public abstract Type TypeForCLR { get; }
 
         internal ILType(ILEnvironment env)
@@ -24,32 +29,6 @@ namespace ILInterpreter.Environment.TypeSystem
         {
             return Id;
         }
-
-        public override string ToString()
-        {
-            return FullName;
-        }
-
-        #region Name
-        public abstract AssemblyName AssemblyName { get; }
-
-        private string fullName;
-        public string FullName
-        {
-            get { return fullName ?? (fullName = TypeName.Parse(this, false)); }
-        }
-
-        private string fullQualifiedName;
-        public string FullQulifiedName
-        {
-            get { return fullQualifiedName ?? (fullQualifiedName = TypeName.Parse(this, true)); }
-        }
-
-        public string AssemblyQualifiedName
-        {
-            get { return FullQulifiedName + ", " + AssemblyName; }
-        }
-        #endregion
 
         public abstract ILType ElementType { get; }
 
@@ -158,74 +137,6 @@ namespace ILInterpreter.Environment.TypeSystem
             sb.Append(AssemblyName);
             return Environment.GetType(sb.ToString());
         }
-        #endregion
-
-        #region Generic
-        private FastList<ILType> genericTypes;
-
-        internal abstract ILType CreateGenericTypeInternal(FastList<ILType> genericArugments);
-
-        internal ILType CreateGenericType(FastList<ILType> genericArguments)
-        {
-            var type = CreateGenericTypeInternal(genericArguments);
-
-            if (genericTypes == null)
-            {
-                genericTypes = new FastList<ILType>();
-            }
-            genericTypes.Add(type);
-            return type;
-        }
-
-        public ILType MakeGenericType(params ILType[] types)
-        {
-            lock (Environment)
-            {
-                if (genericTypes != null)
-                {
-                    foreach (var type in genericTypes)
-                    {
-                        if (EnumerableSupport.Equals(type.genericArguments, types))
-                        {
-                            return type;
-                        }
-                    }
-                }
-            }
-            var sb = new StringBuilder();
-            sb.Append(FullQulifiedName);
-            sb.Append('[');
-            for (var i = 0; i < types.Length; i++)
-            {
-                sb.Append('[');
-                sb.Append(types[i].AssemblyQualifiedName);
-                sb.Append(']');
-                if (i != types.Length - 1)
-                {
-                    sb.Append(',');
-                }
-            }
-            sb.Append("], ");
-            sb.Append(AssemblyName);
-            return Environment.GetType(sb.ToString());
-        }
-
-        public abstract bool IsGenericTypeDefinition { get; }
-
-        public bool IsGenericType
-        {
-            get { return genericArguments != null; }
-        }
-
-        public abstract ILType GenericTypeDefinition { get; }
-
-        internal FastList<ILType> genericArguments;
-
-        public IListView<ILType> GenericArguments
-        {
-            get { return genericArguments; }
-        }
-
         #endregion
 
     }

@@ -64,10 +64,14 @@ namespace ILInterpreter.Environment
             {
                 //todo 这里还要区分泛型参数是RuntimeType的情况
                 TypeToILType[type.TypeForCLR] = type;
-                
             }
             IdToType[type.Id] = type;
-            NameToTypes.Add(type.FullName, type);
+
+            if (type.HasFullName)
+            {
+                NameToTypes.Add(type.FullName, type);
+            }
+
             return type;
         }
         #endregion

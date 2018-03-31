@@ -49,7 +49,13 @@ namespace ILInterpreter.Environment.TypeSystem
             get { return assemblyName; }
         }
 
+        public override string Name
+        {
+            get { return clrType.Name; }
+        }
+
         private ILType elementType;
+
         public override ILType ElementType
         {
             get { return elementType; }
@@ -112,6 +118,11 @@ namespace ILInterpreter.Environment.TypeSystem
         public override bool IsGenericTypeDefinition
         {
             get { return clrType.IsGenericTypeDefinition; }
+        }
+
+        public override bool IsGenericParameter
+        {
+            get { return clrType.IsGenericParameter; }
         }
 
         private ILType genericTypeDefinition;

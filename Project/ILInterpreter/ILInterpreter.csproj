@@ -47,6 +47,8 @@
     <Compile Include="Environment\TypeSystem\AssemblyName.cs" />
     <Compile Include="Environment\TypeSystem\CLRType.cs" />
     <Compile Include="Environment\TypeSystem\ILType.cs" />
+    <Compile Include="Environment\TypeSystem\ILType_Generic.cs" />
+    <Compile Include="Environment\TypeSystem\ILType_Name.cs" />
     <Compile Include="Environment\TypeSystem\Symbol\ArraySymbol.cs" />
     <Compile Include="Environment\TypeSystem\Symbol\ComponentSymbol.cs" />
     <Compile Include="Environment\TypeSystem\Symbol\GenericSymbol.cs" />

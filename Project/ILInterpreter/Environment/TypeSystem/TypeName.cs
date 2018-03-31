@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using ILInterpreter.Support;
 
 namespace ILInterpreter.Environment.TypeSystem
 {
@@ -48,20 +49,18 @@ namespace ILInterpreter.Environment.TypeSystem
             else if (type.IsGenericType && !type.IsGenericTypeDefinition)
             {
                 sb.Append(Parse(type.GenericTypeDefinition, false, assembly));
-                sb.Append('[');
-                foreach (var generic in type.GenericArguments)
+                sb.Append(type.GenericArguments.ToJoinString("[", "]", ",", (appender, t) =>
                 {
                     if (assembly)
                     {
-                        sb.Append('[');
+                        appender.Append('[');
                     }
-                    sb.Append(Parse(generic, assembly, assembly));
+                    appender.Append(Parse(t, assembly, assembly));
                     if (assembly)
                     {
-                        sb.Append(']');
+                        appender.Append(']');
                     }
-                }
-                sb.Append(']');
+                }));
             }
             else
             {
