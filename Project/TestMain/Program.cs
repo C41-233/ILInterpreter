@@ -27,9 +27,9 @@ namespace TestMain
         public static void Main(string[] args)
         {
             var env = new ILEnvironment();
-            Console.WriteLine(typeof(Test<>).GetField("h").FieldType);
-            var t = env.GetType(typeof(Test<>).GetField("h").FieldType);
-            Console.WriteLine(t);
+            env.LoadAssembyFromFile(@"G:\workspace\ILInterpreter\Project\bin\Debug\TestCase.dll");
+            Console.WriteLine(env.GetType("TestMain.Program"));
+            Console.WriteLine(Type.GetType("TestMain.Program"));
         }
     }
 }

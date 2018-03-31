@@ -40,7 +40,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Environment\IdGenerator.cs" />
+    <Compile Include="Support\IdGenerator.cs" />
     <Compile Include="Environment\ILEnvironment.cs" />
     <Compile Include="Environment\ILEnvironment_TypeBuilder.cs" />
     <Compile Include="Environment\ILExceptions.cs" />
@@ -49,6 +49,7 @@
     <Compile Include="Environment\TypeSystem\ILType.cs" />
     <Compile Include="Environment\TypeSystem\ILType_Generic.cs" />
     <Compile Include="Environment\TypeSystem\ILType_Name.cs" />
+    <Compile Include="Environment\TypeSystem\RuntimeType.cs" />
     <Compile Include="Environment\TypeSystem\Symbol\ArraySymbol.cs" />
     <Compile Include="Environment\TypeSystem\Symbol\ComponentSymbol.cs" />
     <Compile Include="Environment\TypeSystem\Symbol\GenericSymbol.cs" />
@@ -56,7 +57,8 @@
     <Compile Include="Environment\TypeSystem\Symbol\NameSymbol.cs" />
     <Compile Include="Environment\TypeSystem\Symbol\PointerSymbol.cs" />
     <Compile Include="Environment\TypeSystem\Symbol\RefSymbol.cs" />
-    <Compile Include="Environment\TypeSystem\Symbol\Score.cs" />
+    <Compile Include="Environment\TypeSystem\Symbol\TypeSymbolScore.cs" />
+    <Compile Include="Environment\TypeSystem\TypeExtends.cs" />
     <Compile Include="Environment\TypeSystem\TypeNameDictionary.cs" />
     <Compile Include="Environment\TypeSystem\TypeName.cs" />
     <Compile Include="Environment\TypeSystem\Symbol\TypeSymbol.cs" />

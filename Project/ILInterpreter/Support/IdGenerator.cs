@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 
-namespace ILInterpreter.Environment
+namespace ILInterpreter.Support
 {
     internal static class IdConstant
     {

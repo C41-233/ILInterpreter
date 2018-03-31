@@ -49,6 +49,11 @@ namespace ILInterpreter.Environment.TypeSystem
             get { return assemblyName; }
         }
 
+        public override string Namespace
+        {
+            get { return clrType.Namespace; }
+        }
+
         public override string Name
         {
             get { return clrType.Name; }

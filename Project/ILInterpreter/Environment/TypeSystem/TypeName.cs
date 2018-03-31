@@ -18,6 +18,11 @@ namespace ILInterpreter.Environment.TypeSystem
             {
                 return Parse(type, partialAssembly, assembly, () => type.TypeForCLR.FullName);
             }
+            var runtimeType = type as RuntimeType;
+            if (runtimeType != null)
+            {
+                return Parse(runtimeType, partialAssembly, assembly, () => runtimeType.TypeReference.FullName);
+            }
             throw new NotSupportedException();
         }
 

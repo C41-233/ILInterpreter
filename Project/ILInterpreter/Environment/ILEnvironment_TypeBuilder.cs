@@ -99,7 +99,7 @@ namespace ILInterpreter.Environment
             var nameSymbol = symbol as NameSymbol;
             if(nameSymbol != null)
             {
-                var clr = Type.GetType(nameSymbol.AssemblyQualifiedName);
+                var clr = TypeExtends.GetType(nameSymbol.AssemblyQualifiedName);
                 if (clr == null)
                 {
                     return null;

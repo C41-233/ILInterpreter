@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ILInterpreter.Support;
 
 namespace ILInterpreter.Environment.TypeSystem
 {

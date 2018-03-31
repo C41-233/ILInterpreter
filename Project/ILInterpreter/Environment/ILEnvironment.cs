@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using ILInterpreter.Environment.TypeSystem;
 using ILInterpreter.Environment.TypeSystem.Symbol;
+using Mono.Cecil;
 
 namespace ILInterpreter.Environment
 {
@@ -57,6 +59,19 @@ namespace ILInterpreter.Environment
             }
         }
 
+        public ILType GetType(int id)
+        {
+            lock (this)
+            {
+                ILType type;
+                if (IdToType.TryGetValue(id, out type))
+                {
+                    return type;
+                }
+            }
+            return null;
+        }
+
         private ILType CacheTypeInternal(ILType type)
         {
             var clrType = type as CLRType;
@@ -74,6 +89,31 @@ namespace ILInterpreter.Environment
 
             return type;
         }
+        #endregion
+
+        #region dll加载
+
+        public void LoadAssembyFromFile(string filename)
+        {
+            using (var stream = new FileStream(filename, FileMode.Open))
+            {
+                LoadAssembly(stream);
+            }
+        }
+
+        public void LoadAssembly(Stream stream)
+        {
+            var module = ModuleDefinition.ReadModule(stream);
+            if (module.HasTypes)
+            {
+                foreach (var typeDefinition in module.GetTypes())
+                {
+                    var type = RuntimeType.Create(typeDefinition, this);
+                    CacheTypeInternal(type);
+                }
+            }
+        }
+
         #endregion
 
     }

@@ -15,6 +15,8 @@ namespace ILInterpreter.Environment.TypeSystem
 
         public abstract AssemblyName AssemblyName { get; }
 
+        public abstract string Namespace { get; }
+
         private void InitFullNameInternal()
         {
             lock (Environment)
