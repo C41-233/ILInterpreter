@@ -66,6 +66,35 @@ namespace ILInterpreter.Environment.TypeSystem
             get { return elementType; }
         }
 
+        private ILType baseType;
+        private bool isBaseTypeInit;
+        public override ILType BaseType
+        {
+            get
+            {
+                if (!isBaseTypeInit)
+                {
+                    InitBaseType();
+                }
+                return baseType;
+            }
+        }
+        private void InitBaseType()
+        {
+            lock (Environment)
+            {
+                if (isBaseTypeInit)
+                {
+                    return;
+                }
+                if (clrType.BaseType != null)
+                {
+                    baseType = Environment.GetType(clrType.BaseType);
+                }
+                isBaseTypeInit = true;
+            }
+        }
+
         #region Ref
         internal override ILType CreateByRefTypeInternal()
         {

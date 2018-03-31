@@ -11,6 +11,11 @@
             }
         }
 
+        public struct StructTest
+        {
+            
+        }
+
         public static void Run()
         {
             var a = new GenericTest<string>();

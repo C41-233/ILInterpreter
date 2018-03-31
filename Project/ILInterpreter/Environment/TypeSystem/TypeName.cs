@@ -21,7 +21,13 @@ namespace ILInterpreter.Environment.TypeSystem
             var runtimeType = type as RuntimeType;
             if (runtimeType != null)
             {
-                return Parse(runtimeType, partialAssembly, assembly, () => runtimeType.TypeReference.FullName);
+                return Parse(runtimeType, partialAssembly, assembly, () =>
+                {
+                    string fullname = runtimeType.TypeReference.FullName;
+                    //嵌套类型
+                    fullname = fullname.Replace('/', '+');
+                    return fullname;
+                });
             }
             throw new NotSupportedException();
         }

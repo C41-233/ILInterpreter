@@ -17,7 +17,7 @@ namespace TestMain
 
         }
 
-        public class Test<T>
+        public class Test<T> : List<T>
         {
 
             public Dictionary<T, int> h;
@@ -28,8 +28,8 @@ namespace TestMain
         {
             var env = new ILEnvironment();
             env.LoadAssembyFromFile(@"G:\workspace\ILInterpreter\Project\bin\Debug\TestCase.dll");
-            Console.WriteLine(env.GetType("TestMain.Program"));
-            Console.WriteLine(Type.GetType("TestMain.Program"));
+            Console.WriteLine(env.GetType(typeof(Test<>)).BaseType);
+            Console.WriteLine(env.GetType("TestCase.Test03+GenericTest`1").BaseType);
         }
     }
 }

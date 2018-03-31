@@ -38,6 +38,8 @@ namespace ILInterpreter.Environment.TypeSystem
             get { return ElementType != null; }
         }
 
+        public abstract ILType BaseType { get; }
+
         #region Ref
         private ILType byRefType;
         public ILType MakeByRefType()
