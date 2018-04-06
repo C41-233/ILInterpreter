@@ -196,8 +196,9 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
                     return new CLRGenericDefinitionType(type, env);
                 }
 
-                var genericArguments = new FastList<ILType>();
-                foreach (var generic in type.GetGenericArguments())
+                var clrGenericArguments = type.GetGenericArguments();
+                var genericArguments = new FastList<ILType>(clrGenericArguments.Length);
+                foreach (var generic in clrGenericArguments)
                 {
                     genericArguments.Add(env.GetType(generic));
                 }

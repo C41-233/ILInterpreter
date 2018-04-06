@@ -11,7 +11,12 @@ namespace TestMain
 
         public static void Main(string[] args)
         {
+            Test();
             TestLoader.Run();
+        }
+
+        private static void Test()
+        {
         }
 
     }

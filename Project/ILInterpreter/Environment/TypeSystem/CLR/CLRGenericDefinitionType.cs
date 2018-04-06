@@ -50,8 +50,10 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
                     {
                         return;
                     }
-                    genericArguments = new FastList<ILType>();
-                    foreach (var arg in clrType.GetGenericArguments())
+
+                    var clrGenericArguments = clrType.GetGenericArguments();
+                    genericArguments = new FastList<ILType>(clrGenericArguments.Length);
+                    foreach (var arg in clrGenericArguments)
                     {
                         genericArguments.Add(Environment.GetType(arg));
                     }

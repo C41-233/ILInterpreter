@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System;
+using System.Linq;
+using System.Text;
 using ILInterpreter.Support;
 
 namespace ILInterpreter.Environment.TypeSystem
@@ -56,6 +58,11 @@ namespace ILInterpreter.Environment.TypeSystem
             sb.Append("], ");
             sb.Append(AssemblyName);
             return Environment.GetType(sb.ToString());
+        }
+
+        public ILType MakeGenericType(params Type[] genericArguments)
+        {
+            return MakeGenericType(genericArguments.Select(t=>Environment.GetType(t)).ToArray());
         }
 
         public abstract bool IsGenericTypeDefinition { get; }

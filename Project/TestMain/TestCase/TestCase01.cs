@@ -62,6 +62,8 @@ namespace TestMain.TestCase
         {
             var type = env.GetType(typeof(List<>));
             Assert.AreEquals(type.FullName, "System.Collections.Generic.List`1");
+            Assert.AreEquals(type.FullQulifiedName, typeof(List<>).FullName);
+            Assert.AreEquals(type.AssemblyQualifiedName, typeof(List<>).AssemblyQualifiedName);
             Assert.AreSame(type, env.GetType(typeof(List<>)));
             Assert.AreSame(type, env.GetType("System.Collections.Generic.List`1"));
             Assert.AreSame(type, env.GetType("System.Collections.Generic.List`1[System.Int32]").GenericTypeDefinition);
@@ -69,6 +71,16 @@ namespace TestMain.TestCase
             Assert.AreSame(type.MakeGenericType(env.GetType(typeof(int))), env.GetType(typeof(List<int>)));
         }
 
+        [Test]
+        public static void Test04()
+        {
+            var type = typeof(Dictionary<List<int>, int[,]>);
+            Assert.AreEquals(env.GetType(type).FullName, "System.Collections.Generic.Dictionary`2[System.Collections.Generic.List`1[System.Int32],System.Int32[,]]");
+            Assert.AreEquals(env.GetType(type).FullQulifiedName, type.FullName);
+            Assert.AreEquals(env.GetType(type).AssemblyQualifiedName, type.AssemblyQualifiedName);
+            Assert.AreSame(env.GetType(type), env.GetType("System.Collections.Generic.Dictionary`2[System.Collections.Generic.List`1[System.Int32],System.Int32[,]]"));
+            Assert.AreSame(env.GetType(type), env.GetType(typeof(Dictionary<,>)).MakeGenericType(typeof(List<int>),typeof(int[,])));
+        }
     }
 
 }
