@@ -31,11 +31,35 @@ namespace ILInterpreter.Environment.TypeSystem
             return Id;
         }
 
+        #region Name
+        public sealed override string ToString()
+        {
+            return FullName;
+        }
+
+        public abstract AssemblyName AssemblyName { get; }
+
+        public abstract string Namespace { get; }
+
+        public abstract string FullName { get; }
+
+        public abstract string FullQulifiedName { get; }
+
+        public string AssemblyQualifiedName
+        {
+            get { return FullQulifiedName + ", " + AssemblyName; }
+        }
+
+        public abstract string Name { get; }
+        #endregion
+
         public abstract ILType ElementType { get; }
 
         public abstract bool HasElementType { get; }
 
         public abstract ILType BaseType { get; }
+
+        public abstract ILType DeclaringType { get; }
 
         #region Ref
         private ILType byRefType;

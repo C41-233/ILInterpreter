@@ -40,6 +40,16 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
             get { return reference.Namespace; }
         }
 
+        public override string FullName
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override string FullQulifiedName
+        {
+            get { throw new NotImplementedException(); }
+        }
+
         public override string Name
         {
             get { return reference.Name; }
@@ -76,6 +86,11 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
             get { throw new NotImplementedException(); }
         }
 
+        public override int GenericParameterPosition
+        {
+            get { throw new NotImplementedException(); }
+        }
+
         public override Type TypeForCLR
         {
             get { throw new NotImplementedException(); }
@@ -105,6 +120,12 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
                 return baseType;
             }
         }
+
+        public override ILType DeclaringType
+        {
+            get { throw new NotImplementedException(); }
+        }
+
         private void InitBaseType()
         {
             lock (Environment)
@@ -118,8 +139,7 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
                 {
                     if (def.BaseType != null)
                     {
-                        var assemblyQualifiedName = TypeNameExtends.ParseAssemblyQualifiedName(def.BaseType);
-                        baseType = Environment.GetType(assemblyQualifiedName);
+                        
                     }
                 }
 

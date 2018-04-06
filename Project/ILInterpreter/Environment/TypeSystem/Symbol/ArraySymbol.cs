@@ -21,12 +21,7 @@ namespace ILInterpreter.Environment.TypeSystem.Symbol
                 {
                     var sb = new StringBuilder();
                     sb.Append(Element.FullName);
-                    sb.Append('[');
-                    for (var i = 0; i < Rank - 1; i++)
-                    {
-                        sb.Append(',');
-                    }
-                    sb.Append(']');
+                    sb.Append(TypeSupport.GetArrayString(Rank));
                     fullname = sb.ToString();
                 }
                 return fullname;

@@ -22,17 +22,7 @@ namespace ILInterpreter.Environment.TypeSystem.Symbol
                 {
                     var sb = new StringBuilder();
                     sb.Append(Element.FullName);
-                    sb.Append('[');
-                    for (var i = 0; i < GenericParameters.Count; i++)
-                    {
-                        sb.Append(GenericParameters[i].FullName);
-                        if (i < GenericParameters.Count - 1)
-                        {
-                            sb.Append(',');
-                        }
-                    }
-                    sb.Append(']');
-
+                    sb.Append(GenericParameters.ToJoinString("[", "]", ",", parameter=>parameter.FullName));
                     fullname = sb.ToString();
                     count = GenericParameters.Count;
                 }

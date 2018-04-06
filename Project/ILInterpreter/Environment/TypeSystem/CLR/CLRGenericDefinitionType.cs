@@ -6,18 +6,17 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
     internal abstract partial class CLRType
     {
 
-        private sealed class CLRGenericType : CLRType
+        private sealed class CLRGenericDefinitionType : CLRType
         {
 
-            public CLRGenericType(ILType genericTypeDefinition, FastList<ILType> genericArguments, Type type, ILEnvironment env) : base(type, env)
+            public CLRGenericDefinitionType(FastList<ILType> genericArguments, Type type, ILEnvironment env) : base(type, env)
             {
-                this.genericTypeDefinition = genericTypeDefinition;
                 this.genericArguments = genericArguments;
             }
 
             public override bool IsGenericTypeDefinition
             {
-                get { return clrType.IsGenericTypeDefinition; }
+                get { return true; }
             }
 
             public override bool IsGenericType
@@ -25,12 +24,11 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
                 get { return true; }
             }
 
-            private readonly ILType genericTypeDefinition;
             private readonly FastList<ILType> genericArguments;
 
             public override ILType GenericTypeDefinition
             {
-                get { return genericTypeDefinition; }
+                get { return this; }
             }
 
             public override IListView<ILType> GenericArguments
@@ -54,10 +52,20 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
                     throw new NotSupportedException();
                 }
                 var type = clrType.MakeGenericType(genericCLRTypes);
-                var self = new CLRGenericType(this, genericArugments, type, Environment);
+                var self = new CLRGenericSpecificationType(this, genericArugments, type, Environment);
                 return self;
             }
-        }
 
+            public override string FullName
+            {
+                get { return clrType.FullName; }
+            }
+
+            public override string FullQulifiedName
+            {
+                get { return clrType.FullName; }
+            }
+
+        }
     }
 }

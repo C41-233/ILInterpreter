@@ -84,11 +84,7 @@ namespace ILInterpreter.Environment
             }
             IdToType[type.Id] = type;
 
-            if (type.HasFullName)
-            {
-                NameToTypes.Add(type.FullName, type);
-            }
-
+            NameToTypes.Add(type.FullName, type);
             return type;
         }
         #endregion

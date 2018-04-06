@@ -68,5 +68,7 @@ namespace ILInterpreter.Environment.TypeSystem
 
         public abstract IListView<ILType> GenericArguments { get; }
 
+        public abstract int GenericParameterPosition { get; }
+
     }
 }

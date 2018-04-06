@@ -16,6 +16,50 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
             {
                 get { return true; }
             }
+
+            public override int GenericParameterPosition
+            {
+                get { return clrType.GenericParameterPosition; }
+            }
+
+            private ILType declaringType;
+            private bool isDeclaringTypeInit;
+
+            public override ILType DeclaringType
+            {
+                get
+                {
+                    if (!isDeclaringTypeInit)
+                    {
+                        InitDeclaringType();
+                    }
+                    return declaringType;
+                }
+            }
+
+            private void InitDeclaringType()
+            {
+                lock (Environment)
+                {
+                    if (isDeclaringTypeInit)
+                    {
+                        return;
+                    }
+                    declaringType = Environment.GetType(clrType.DeclaringType);
+                    isDeclaringTypeInit = true;
+                }
+            }
+
+            public override string FullName
+            {
+                get { return DeclaringType.FullName + "!" + GenericParameterPosition; }
+            }
+
+            public override string FullQulifiedName
+            {
+                get { return DeclaringType.FullQulifiedName + "!" + GenericParameterPosition; }
+            }
+
         }
     }
 }

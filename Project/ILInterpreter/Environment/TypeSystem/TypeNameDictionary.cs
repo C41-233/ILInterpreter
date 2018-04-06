@@ -14,7 +14,9 @@ namespace ILInterpreter.Environment.TypeSystem
             if (dict.TryGetValue(name, out list))
             {
                 list.Add(type);
+                return;
             }
+
             //通常只会有一个匹配项，节省内存
             list = new FastList<ILType>(1){type};
             dict.Add(name, list);

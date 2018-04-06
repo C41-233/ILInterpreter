@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 
-namespace ILInterpreter.Environment.TypeSystem.CLR
+namespace ILInterpreter.Environment.TypeSystem
 {
     internal static class TypeSupport
     {
@@ -22,6 +23,18 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
                 }
             }
             return null;
+        }
+
+        public static string GetArrayString(int rank)
+        {
+            var sb = new StringBuilder();
+            sb.Append('[');
+            for (var i = 0; i < rank - 1; i++)
+            {
+                sb.Append(',');
+            }
+            sb.Append(']');
+            return sb.ToString();
         }
 
     }

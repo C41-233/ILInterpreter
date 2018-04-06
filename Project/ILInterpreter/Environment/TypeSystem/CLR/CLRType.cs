@@ -74,6 +74,11 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
             }
         }
 
+        public override ILType DeclaringType
+        {
+            get { return null; }
+        }
+
         #region Ref
         public override bool IsByRef
         {
@@ -148,6 +153,11 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
             get { return null; }
         }
 
+        public override int GenericParameterPosition
+        {
+            get { throw new InvalidOperationException(string.Format("type {0} is not GenericParameterType.", FullName)); }
+        }
+
         internal override ILType CreateGenericTypeInternal(FastList<ILType> genericArugments)
         {
             throw new InvalidOperationException(string.Format("type {0} is not GenericDefinitionType.", FullName));
@@ -181,13 +191,17 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
 
             if (type.IsGenericType)
             {
-                var genericTypeDefinition = env.GetType(type.GetGenericTypeDefinition());
                 var genericArguments = new FastList<ILType>();
                 foreach (var generic in type.GetGenericArguments())
                 {
                     genericArguments.Add(env.GetType(generic));
                 }
-                return new CLRGenericType(genericTypeDefinition, genericArguments, type, env);
+                if (type.IsGenericTypeDefinition)
+                {
+                    return new CLRGenericDefinitionType(genericArguments, type, env);
+                }
+                var genericTypeDefinition = env.GetType(type.GetGenericTypeDefinition());
+                return new CLRGenericSpecificationType(genericTypeDefinition, genericArguments, type, env);
             }
 
             return new CLRDirectType(type, env);

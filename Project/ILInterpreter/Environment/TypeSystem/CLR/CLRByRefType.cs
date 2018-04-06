@@ -29,6 +29,17 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
             {
                 get { return true; }
             }
+
+            public override string FullName
+            {
+                get { return elementType.FullName + "&"; }
+            }
+
+            public override string FullQulifiedName
+            {
+                get { return elementType.FullQulifiedName + "&"; }
+            }
+
         }
 
     }
