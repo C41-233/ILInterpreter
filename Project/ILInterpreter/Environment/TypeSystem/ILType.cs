@@ -33,15 +33,13 @@ namespace ILInterpreter.Environment.TypeSystem
 
         public abstract ILType ElementType { get; }
 
-        public bool HasElementType
-        {
-            get { return ElementType != null; }
-        }
+        public abstract bool HasElementType { get; }
 
         public abstract ILType BaseType { get; }
 
         #region Ref
         private ILType byRefType;
+
         public ILType MakeByRefType()
         {
             lock (Environment)
@@ -53,18 +51,22 @@ namespace ILInterpreter.Environment.TypeSystem
             }
             return Environment.GetType(FullQulifiedName + "&, " + AssemblyName);
         }
+
         internal ILType CreateByRefType()
         {
             var type = CreateByRefTypeInternal();
             byRefType = type;
             return type;
         }
+
         internal abstract ILType CreateByRefTypeInternal();
+
         public abstract bool IsByRef { get; }
         #endregion
 
         #region Pointer
         private ILType pointerType;
+
         public ILType MakePointerType()
         {
             lock (Environment)
@@ -85,15 +87,14 @@ namespace ILInterpreter.Environment.TypeSystem
         }
 
         internal abstract ILType CreatePointerTypeInternal();
+
         public abstract bool IsPointer { get; }
         #endregion
 
         #region Array
         private Dictionary<int, ILType> arrayTypes;
-        public bool IsArray
-        {
-            get { return ArrayRank > 0; }
-        }
+
+        public abstract bool IsArray { get; }
 
         public abstract int ArrayRank { get; }
 
@@ -110,12 +111,7 @@ namespace ILInterpreter.Environment.TypeSystem
 
         internal abstract ILType CreateArrayTypeInternal(int rank);
 
-        public ILType MakeArrayType()
-        {
-            return MakeArrayType(1);
-        }
-
-        public ILType MakeArrayType(int rank)
+        public ILType MakeArrayType(int rank = 1)
         {
             if (rank <= 0)
             {

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Text;
+using ILInterpreter.Environment.TypeSystem.CLR;
+using ILInterpreter.Environment.TypeSystem.Runtime;
 using ILInterpreter.Support;
+using Mono.Cecil;
 
 namespace ILInterpreter.Environment.TypeSystem
 {
-    internal static class TypeName
+    internal static class TypeNameExtends
     {
 
         public static string Parse(ILType type, bool isFullQualifiedName)
@@ -81,6 +84,53 @@ namespace ILInterpreter.Environment.TypeSystem
             if (partialAssembly)
             {
                 sb.Append(", ").Append(type.AssemblyName);
+            }
+            return sb.ToString();
+        }
+
+        public static string ParseAssemblyQualifiedName(TypeReference type)
+        {
+            return Parse(type, true);
+        }
+
+        private static string Parse(TypeReference type, bool partialAssembly)
+        {
+            var sb = new StringBuilder();
+            var arrayType = type as ArrayType;
+            if (arrayType != null)
+            {
+                sb.Append(Parse(arrayType.ElementType, false));
+                sb.Append('[');
+                for (var i=0; i<arrayType.Rank-1; i++)
+                {
+                    sb.Append(',');
+                }
+                sb.Append(']');
+            }
+
+            var byRefType = type as ByReferenceType;
+            if (byRefType != null)
+            {
+                sb.Append(Parse(byRefType.ElementType, false));
+                sb.Append('&');
+            }
+
+            var pointerType = type as PointerType;
+            if (pointerType != null)
+            {
+                sb.Append(Parse(pointerType.ElementType, false));
+                sb.Append('*');
+            }
+
+            var definitionType = type as TypeDefinition;
+            if (definitionType != null)
+            {
+                sb.Append(definitionType.FullName);
+            }
+
+            if (partialAssembly)
+            {
+                sb.Append(", ").Append(type.Module.Assembly);
             }
             return sb.ToString();
         }

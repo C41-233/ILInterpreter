@@ -33,7 +33,7 @@ namespace ILInterpreter.Environment.TypeSystem
                 {
                     foreach (var type in genericTypes)
                     {
-                        if (EnumerableSupport.Equals(type.genericArguments, types))
+                        if (EnumerableSupport.Equals(type.GenericArguments, types))
                         {
                             return type;
                         }
@@ -62,20 +62,11 @@ namespace ILInterpreter.Environment.TypeSystem
 
         public abstract bool IsGenericParameter { get; }
 
-        public bool IsGenericType
-        {
-            get { return genericArguments != null; }
-        }
+        public abstract bool IsGenericType { get; }
 
         public abstract ILType GenericTypeDefinition { get; }
 
-        internal FastList<ILType> genericArguments;
-
-        public IListView<ILType> GenericArguments
-        {
-            get { return genericArguments; }
-        }
-
+        public abstract IListView<ILType> GenericArguments { get; }
 
     }
 }

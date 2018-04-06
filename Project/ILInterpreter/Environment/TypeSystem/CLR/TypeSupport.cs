@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 
-namespace ILInterpreter.Environment.TypeSystem
+namespace ILInterpreter.Environment.TypeSystem.CLR
 {
-    internal static class TypeExtends
+    internal static class TypeSupport
     {
 
         public static Type GetType(string fullname)

@@ -1,5 +1,6 @@
 ﻿using System;
 using ILInterpreter.Environment.TypeSystem;
+using ILInterpreter.Environment.TypeSystem.CLR;
 using ILInterpreter.Environment.TypeSystem.Symbol;
 using ILInterpreter.Support;
 
@@ -99,7 +100,7 @@ namespace ILInterpreter.Environment
             var nameSymbol = symbol as NameSymbol;
             if(nameSymbol != null)
             {
-                var clr = TypeExtends.GetType(nameSymbol.AssemblyQualifiedName);
+                var clr = TypeSupport.GetType(nameSymbol.AssemblyQualifiedName);
                 if (clr == null)
                 {
                     return null;

@@ -5,7 +5,7 @@ namespace ILInterpreter.Support
     internal static class EnumerableSupport
     {
 
-        public static bool Equals(FastList<ILType> a , ILType[] b)
+        public static bool Equals(IListView<ILType> a , ILType[] b)
         {
             if (a.Count != b.Length)
             {

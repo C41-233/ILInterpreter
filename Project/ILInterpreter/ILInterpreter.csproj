@@ -21,7 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>3</LangVersion>
+    <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -40,16 +40,22 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Environment\TypeSystem\CLR\CLRArrayType.cs" />
+    <Compile Include="Environment\TypeSystem\CLR\CLRGenericParameterType.cs" />
+    <Compile Include="Environment\TypeSystem\CLR\CLRGenericType.cs" />
+    <Compile Include="Environment\TypeSystem\CLR\CLRPointerType.cs" />
+    <Compile Include="Environment\TypeSystem\CLR\CLRByRefType.cs" />
+    <Compile Include="Environment\TypeSystem\CLR\CLRDirectType.cs" />
     <Compile Include="Support\IdGenerator.cs" />
     <Compile Include="Environment\ILEnvironment.cs" />
     <Compile Include="Environment\ILEnvironment_TypeBuilder.cs" />
     <Compile Include="Environment\ILExceptions.cs" />
     <Compile Include="Environment\TypeSystem\AssemblyName.cs" />
-    <Compile Include="Environment\TypeSystem\CLRType.cs" />
+    <Compile Include="Environment\TypeSystem\CLR\CLRType.cs" />
     <Compile Include="Environment\TypeSystem\ILType.cs" />
     <Compile Include="Environment\TypeSystem\ILType_Generic.cs" />
     <Compile Include="Environment\TypeSystem\ILType_Name.cs" />
-    <Compile Include="Environment\TypeSystem\RuntimeType.cs" />
+    <Compile Include="Environment\TypeSystem\Runtime\RuntimeType.cs" />
     <Compile Include="Environment\TypeSystem\Symbol\ArraySymbol.cs" />
     <Compile Include="Environment\TypeSystem\Symbol\ComponentSymbol.cs" />
     <Compile Include="Environment\TypeSystem\Symbol\GenericSymbol.cs" />
@@ -58,9 +64,9 @@
     <Compile Include="Environment\TypeSystem\Symbol\PointerSymbol.cs" />
     <Compile Include="Environment\TypeSystem\Symbol\RefSymbol.cs" />
     <Compile Include="Environment\TypeSystem\Symbol\TypeSymbolScore.cs" />
-    <Compile Include="Environment\TypeSystem\TypeExtends.cs" />
+    <Compile Include="Environment\TypeSystem\CLR\TypeSupport.cs" />
     <Compile Include="Environment\TypeSystem\TypeNameDictionary.cs" />
-    <Compile Include="Environment\TypeSystem\TypeName.cs" />
+    <Compile Include="Environment\TypeSystem\TypeNameExtends.cs" />
     <Compile Include="Environment\TypeSystem\Symbol\TypeSymbol.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Support\EnumerableSupport.cs" />

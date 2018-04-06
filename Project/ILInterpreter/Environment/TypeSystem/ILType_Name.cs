@@ -37,7 +37,7 @@ namespace ILInterpreter.Environment.TypeSystem
                 {
                     return;
                 }
-                fullName = TypeName.Parse(this, false);
+                fullName = TypeNameExtends.Parse(this, false);
                 isFullNameInit = true;
             }
         }
@@ -72,7 +72,7 @@ namespace ILInterpreter.Environment.TypeSystem
             {
                 if (HasFullName)
                 {
-                    return fullQualifiedName ?? (fullQualifiedName = TypeName.Parse(this, true));
+                    return fullQualifiedName ?? (fullQualifiedName = TypeNameExtends.Parse(this, true));
                 }
                 return null;
             }

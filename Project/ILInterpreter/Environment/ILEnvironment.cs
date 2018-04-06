@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using ILInterpreter.Environment.TypeSystem;
+using ILInterpreter.Environment.TypeSystem.CLR;
+using ILInterpreter.Environment.TypeSystem.Runtime;
 using ILInterpreter.Environment.TypeSystem.Symbol;
 using Mono.Cecil;
 

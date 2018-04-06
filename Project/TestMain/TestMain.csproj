@@ -41,8 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engine\TestLoader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Engine\TestBase\Assert.cs" />
+    <Compile Include="Engine\TestBase\AssertException.cs" />
+    <Compile Include="Engine\TestBase\Attribute.cs" />
+    <Compile Include="TestCase\TestCase01.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -53,5 +58,6 @@
       <Name>ILInterpreter</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

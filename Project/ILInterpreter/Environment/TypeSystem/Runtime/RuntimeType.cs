@@ -2,7 +2,7 @@
 using ILInterpreter.Support;
 using Mono.Cecil;
 
-namespace ILInterpreter.Environment.TypeSystem
+namespace ILInterpreter.Environment.TypeSystem.Runtime
 {
     public sealed class RuntimeType : ILType
     {
@@ -61,7 +61,17 @@ namespace ILInterpreter.Environment.TypeSystem
             get { return reference.IsGenericParameter; }
         }
 
+        public override bool IsGenericType
+        {
+            get { throw new NotImplementedException(); }
+        }
+
         public override ILType GenericTypeDefinition
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override IListView<ILType> GenericArguments
         {
             get { throw new NotImplementedException(); }
         }
@@ -75,6 +85,11 @@ namespace ILInterpreter.Environment.TypeSystem
         public override ILType ElementType
         {
             get { return elementType; }
+        }
+
+        public override bool HasElementType
+        {
+            get { throw new NotImplementedException(); }
         }
 
         private bool isBaseTypeInit;
@@ -103,7 +118,8 @@ namespace ILInterpreter.Environment.TypeSystem
                 {
                     if (def.BaseType != null)
                     {
-                        baseType = Environment.GetType(def.BaseType.FullName);
+                        var assemblyQualifiedName = TypeNameExtends.ParseAssemblyQualifiedName(def.BaseType);
+                        baseType = Environment.GetType(assemblyQualifiedName);
                     }
                 }
 
@@ -139,6 +155,11 @@ namespace ILInterpreter.Environment.TypeSystem
         public override bool IsPointer
         {
             get { return reference.IsPointer; }
+        }
+
+        public override bool IsArray
+        {
+            get { throw new NotImplementedException(); }
         }
 
         private int arrayRank;
