@@ -11,7 +11,7 @@ namespace TestMain.Engine.TestBase
         {
             if (!Equals(actual, expected))
             {
-                throw new AssertException($"Assert fail expected={Info(expected)} actual={Info(actual)}");
+                throw new AssertException($"Assert fail \nexpected = {Info(expected)} \nactual   = {Info(actual)}");
             }
         }
 
@@ -35,7 +35,7 @@ namespace TestMain.Engine.TestBase
         {
             if (!ReferenceEquals(actual, expected))
             {
-                throw new AssertException($"Assert fail expected={Info(expected)} actual={Info(actual)}");
+                throw new AssertException($"Assert fail \nexpected = {Info(expected)} \nactual   = {Info(actual)}");
             }
         }
 

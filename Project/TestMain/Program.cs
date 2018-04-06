@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using ILInterpreter.Environment;
 using TestMain.Engine;
+using TestMain.Engine.TestBase;
 
 namespace TestMain
 {

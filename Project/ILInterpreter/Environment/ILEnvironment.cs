@@ -83,7 +83,6 @@ namespace ILInterpreter.Environment
                 TypeToILType[type.TypeForCLR] = type;
             }
             IdToType[type.Id] = type;
-
             NameToTypes.Add(type.FullName, type);
             return type;
         }

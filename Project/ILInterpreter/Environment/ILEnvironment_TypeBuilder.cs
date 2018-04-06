@@ -1,5 +1,4 @@
-﻿using System;
-using ILInterpreter.Environment.TypeSystem;
+﻿using ILInterpreter.Environment.TypeSystem;
 using ILInterpreter.Environment.TypeSystem.CLR;
 using ILInterpreter.Environment.TypeSystem.Symbol;
 using ILInterpreter.Support;

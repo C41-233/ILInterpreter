@@ -9,9 +9,8 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
         private sealed class CLRGenericDefinitionType : CLRType
         {
 
-            public CLRGenericDefinitionType(FastList<ILType> genericArguments, Type type, ILEnvironment env) : base(type, env)
+            public CLRGenericDefinitionType(Type type, ILEnvironment env) : base(type, env)
             {
-                this.genericArguments = genericArguments;
             }
 
             public override bool IsGenericTypeDefinition
@@ -24,7 +23,7 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
                 get { return true; }
             }
 
-            private readonly FastList<ILType> genericArguments;
+            private FastList<ILType> genericArguments;
 
             public override ILType GenericTypeDefinition
             {
@@ -33,7 +32,30 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
 
             public override IListView<ILType> GenericArguments
             {
-                get { return genericArguments; }
+                get
+                {
+                    if (genericArguments == null)
+                    {
+                        InitGenericArguments();
+                    }
+                    return genericArguments;
+                }
+            }
+
+            private void InitGenericArguments()
+            {
+                lock (Environment)
+                {
+                    if (genericArguments != null)
+                    {
+                        return;
+                    }
+                    genericArguments = new FastList<ILType>();
+                    foreach (var arg in clrType.GetGenericArguments())
+                    {
+                        genericArguments.Add(Environment.GetType(arg));
+                    }
+                }
             }
 
             internal override ILType CreateGenericTypeInternal(FastList<ILType> genericArugments)

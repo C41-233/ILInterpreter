@@ -191,14 +191,15 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
 
             if (type.IsGenericType)
             {
+                if (type.IsGenericTypeDefinition)
+                {
+                    return new CLRGenericDefinitionType(type, env);
+                }
+
                 var genericArguments = new FastList<ILType>();
                 foreach (var generic in type.GetGenericArguments())
                 {
                     genericArguments.Add(env.GetType(generic));
-                }
-                if (type.IsGenericTypeDefinition)
-                {
-                    return new CLRGenericDefinitionType(genericArguments, type, env);
                 }
                 var genericTypeDefinition = env.GetType(type.GetGenericTypeDefinition());
                 return new CLRGenericSpecificationType(genericTypeDefinition, genericArguments, type, env);

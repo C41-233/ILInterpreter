@@ -22,6 +22,7 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
                 get { return clrType.GenericParameterPosition; }
             }
 
+            //todo 考虑方法泛型参数
             private ILType declaringType;
             private bool isDeclaringTypeInit;
 

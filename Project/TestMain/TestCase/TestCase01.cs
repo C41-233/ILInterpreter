@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
+﻿using System.Collections.Generic;
 using ILInterpreter.Environment;
 using TestMain.Engine.TestBase;
 using TestMain.TestBase;
@@ -64,7 +62,13 @@ namespace TestMain.TestCase
         {
             var type = env.GetType(typeof(List<>));
             Assert.AreEquals(type.FullName, "System.Collections.Generic.List`1");
+            Assert.AreSame(type, env.GetType(typeof(List<>)));
+            Assert.AreSame(type, env.GetType("System.Collections.Generic.List`1"));
+            Assert.AreSame(type, env.GetType("System.Collections.Generic.List`1[System.Int32]").GenericTypeDefinition);
+            Assert.AreSame(type.MakeGenericType(env.GetType(typeof(int))), env.GetType("System.Collections.Generic.List`1[[System.Int32, mscorlib]]"));
+            Assert.AreSame(type.MakeGenericType(env.GetType(typeof(int))), env.GetType(typeof(List<int>)));
         }
+
     }
 
 }
