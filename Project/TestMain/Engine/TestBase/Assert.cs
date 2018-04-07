@@ -1,5 +1,4 @@
-﻿using System.Xml.Schema;
-using ILInterpreter.Environment.TypeSystem;
+﻿using ILInterpreter.Environment.TypeSystem;
 using TestMain.TestBase;
 
 namespace TestMain.Engine.TestBase

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using TestMain.TestBase;
+using TestMain.Engine.TestBase;
 
 namespace TestMain.Engine
 {
@@ -14,6 +14,7 @@ namespace TestMain.Engine
 
         public static void Run()
         {
+            var beforeClasses = new List<MethodInfo>();
             var befores = new List<MethodInfo>();
             var runs = new List<MethodInfo>();
             var afters = new List<MethodInfo>();
@@ -29,6 +30,15 @@ namespace TestMain.Engine
                 Console.WriteLine($"TestClass {type}");
                 foreach (var method in type.GetMethods())
                 {
+                    if (method.GetCustomAttribute<BeforeClass>() != null)
+                    {
+                        if (!method.IsStatic)
+                        {
+                            Console.WriteLine($"Warning: method {method} in type {type} with attribute BeforeClass is not static.");
+                            continue;
+                        }
+                        beforeClasses.Add(method);
+                    }
                     if (method.GetCustomAttribute<Before>() != null)
                     {
                         if (!method.IsStatic)
@@ -58,6 +68,11 @@ namespace TestMain.Engine
                     }
                 }
 
+                foreach (var method in beforeClasses)
+                {
+                    method.Invoke(null, EmptyArgs);
+                }
+
                 foreach (var run in runs.OrderBy(method => method.Name))
                 {
                     Console.Write($"\tCase {run.Name}\t");
@@ -83,6 +98,7 @@ namespace TestMain.Engine
                     }
                 }
 
+                beforeClasses.Clear();
                 befores.Clear();
                 runs.Clear();
                 afters.Clear();

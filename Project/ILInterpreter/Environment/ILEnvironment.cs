@@ -90,7 +90,7 @@ namespace ILInterpreter.Environment
 
         #region dll加载
 
-        public void LoadAssembyFromFile(string filename)
+        public void LoadAssemblyFromFile(string filename)
         {
             using (var stream = new FileStream(filename, FileMode.Open))
             {
@@ -103,9 +103,9 @@ namespace ILInterpreter.Environment
             var module = ModuleDefinition.ReadModule(stream);
             if (module.HasTypes)
             {
-                foreach (var typeDefinition in module.GetTypes())
+                foreach (var definition in module.GetTypes())
                 {
-                    var type = RuntimeType.Create(typeDefinition, this);
+                    var type = RuntimeType.Create(definition, this);
                     CacheTypeInternal(type);
                 }
             }

@@ -1,6 +1,7 @@
 ﻿using System;
 using ILInterpreter.Support;
 
+// ReSharper disable ConditionIsAlwaysTrueOrFalse
 namespace ILInterpreter.Environment.TypeSystem.CLR
 {
 
@@ -186,7 +187,10 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
 
             if (type.IsGenericParameter)
             {
-                return new CLRGenericParameterType(type, env);
+                if (type.DeclaringType != null)
+                {
+                    return new CLRTypeGenericParameterType(type, env);
+                }
             }
 
             if (type.IsGenericType)

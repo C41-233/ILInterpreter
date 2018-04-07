@@ -31,14 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Mono.Cecil.20, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\Mono.Cecil.20.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Engine\TestLoader.cs" />
@@ -47,7 +45,9 @@
     <Compile Include="Engine\TestBase\Assert.cs" />
     <Compile Include="Engine\TestBase\AssertException.cs" />
     <Compile Include="Engine\TestBase\Attribute.cs" />
+    <Compile Include="TestCase\Constant.cs" />
     <Compile Include="TestCase\TestCase01.cs" />
+    <Compile Include="TestCase\TestCase02.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -151,12 +151,8 @@ namespace ILInterpreter.Environment.TypeSystem
             }
             var sb = new StringBuilder();
             sb.Append(FullQulifiedName);
-            sb.Append('[');
-            for (var i = 0; i < rank - 1; i++)
-            {
-                sb.Append(',');
-            }
-            sb.Append("], ");
+            sb.Append(TypeSupport.GetArrayString(rank));
+            sb.Append(", ");
             sb.Append(AssemblyName);
             return Environment.GetType(sb.ToString());
         }

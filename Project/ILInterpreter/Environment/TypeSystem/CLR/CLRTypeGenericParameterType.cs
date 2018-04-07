@@ -5,10 +5,10 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
     internal abstract partial class CLRType
     {
 
-        private sealed class CLRGenericParameterType : CLRType
+        private sealed class CLRTypeGenericParameterType : CLRType
         {
 
-            public CLRGenericParameterType(Type type, ILEnvironment env) : base(type, env)
+            public CLRTypeGenericParameterType(Type type, ILEnvironment env) : base(type, env)
             {
             }
 
@@ -22,7 +22,6 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
                 get { return clrType.GenericParameterPosition; }
             }
 
-            //todo 考虑方法泛型参数
             private ILType declaringType;
             private bool isDeclaringTypeInit;
 

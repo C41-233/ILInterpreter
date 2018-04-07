@@ -41,12 +41,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Environment\TypeSystem\CLR\CLRArrayType.cs" />
-    <Compile Include="Environment\TypeSystem\CLR\CLRGenericParameterType.cs" />
+    <Compile Include="Environment\TypeSystem\CLR\CLRTypeGenericParameterType.cs" />
     <Compile Include="Environment\TypeSystem\CLR\CLRGenericSpecificationType.cs" />
     <Compile Include="Environment\TypeSystem\CLR\CLRPointerType.cs" />
     <Compile Include="Environment\TypeSystem\CLR\CLRByRefType.cs" />
     <Compile Include="Environment\TypeSystem\CLR\CLRDirectType.cs" />
     <Compile Include="Environment\TypeSystem\CLR\CLRGenericDefinitionType.cs" />
+    <Compile Include="Environment\TypeSystem\Runtime\RuntimeArrayType.cs" />
+    <Compile Include="Environment\TypeSystem\Runtime\RuntimeByRefType.cs" />
+    <Compile Include="Environment\TypeSystem\Runtime\RuntimePointerType.cs" />
+    <Compile Include="Environment\TypeSystem\Runtime\RuntimeTypeGenericParameterType.cs" />
+    <Compile Include="Interpreter\RuntimeTypeInstance.cs" />
     <Compile Include="Support\IdGenerator.cs" />
     <Compile Include="Environment\ILEnvironment.cs" />
     <Compile Include="Environment\ILEnvironment_TypeBuilder.cs" />

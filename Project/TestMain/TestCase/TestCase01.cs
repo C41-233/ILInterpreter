@@ -6,7 +6,7 @@ using TestMain.TestBase;
 namespace TestMain.TestCase
 {
     [TestClass]
-    public class TestCase01
+    public static class TestCase01
     {
 
         private static ILEnvironment env;

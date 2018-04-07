@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TestMain.TestBase
+namespace TestMain.Engine.TestBase
 {
 
     [AttributeUsage(AttributeTargets.Class)]
@@ -20,6 +20,11 @@ namespace TestMain.TestBase
 
     [AttributeUsage(AttributeTargets.Method)]
     public class After : Attribute
+    {
+    }
+
+    [AttributeUsage(AttributeTargets.Method)]
+    public class BeforeClass : Attribute
     {
     }
 

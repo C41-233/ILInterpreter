@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using Mono.Cecil;
 
 namespace ILInterpreter.Environment.TypeSystem
 {
@@ -34,6 +35,53 @@ namespace ILInterpreter.Environment.TypeSystem
                 sb.Append(',');
             }
             sb.Append(']');
+            return sb.ToString();
+        }
+
+        public static string GetTypeAssemblyQualifiedName(this TypeReference reference)
+        {
+            return GetTypeName(reference, true);
+        }
+
+        private static string GetTypeName(TypeReference reference, bool assembly)
+        {
+            var sb = new StringBuilder();
+
+            var pointerType = reference as PointerType;
+            if (pointerType != null)
+            {
+                var element = pointerType.GetElementType();
+                sb.Append(GetTypeName(element, false));
+                sb.Append('*');
+            }
+
+            var refType = reference as ByReferenceType;
+            if (refType != null)
+            {
+                var element = refType.GetElementType();
+                sb.Append(GetTypeName(element, false));
+                sb.Append('&');
+            }
+
+            var arrayType = reference as ArrayType;
+            if (arrayType != null)
+            {
+                var element = arrayType.GetElementType();
+                sb.Append(GetTypeName(element, false));
+                sb.Append(GetArrayString(arrayType.Rank));
+            }
+
+            var definition = reference as TypeDefinition;
+            if (definition != null)
+            {
+                sb.Append(definition.FullName);
+            }
+
+            if (assembly)
+            {
+                sb.Append(", ");
+                sb.Append(reference.Module.Assembly.FullName);
+            }
             return sb.ToString();
         }
 
