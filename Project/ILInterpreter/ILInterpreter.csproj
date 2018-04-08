@@ -49,7 +49,9 @@
     <Compile Include="Environment\TypeSystem\CLR\CLRGenericDefinitionType.cs" />
     <Compile Include="Environment\TypeSystem\Runtime\RuntimeArrayType.cs" />
     <Compile Include="Environment\TypeSystem\Runtime\RuntimeByRefType.cs" />
+    <Compile Include="Environment\TypeSystem\Runtime\RuntimeDirectType.cs" />
     <Compile Include="Environment\TypeSystem\Runtime\RuntimePointerType.cs" />
+    <Compile Include="Environment\TypeSystem\Runtime\RuntimeDefinitionType.cs" />
     <Compile Include="Environment\TypeSystem\Runtime\RuntimeTypeGenericParameterType.cs" />
     <Compile Include="Interpreter\RuntimeTypeInstance.cs" />
     <Compile Include="Support\IdGenerator.cs" />

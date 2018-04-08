@@ -51,7 +51,7 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
                         return;
                     }
 
-                    var clrGenericArguments = clrType.GetGenericArguments();
+                    var clrGenericArguments = typeForCLR.GetGenericArguments();
                     genericArguments = new FastList<ILType>(clrGenericArguments.Length);
                     foreach (var arg in clrGenericArguments)
                     {
@@ -70,24 +70,24 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
                     var genericCLRType = generic as CLRType;
                     if (genericCLRType != null)
                     {
-                        genericCLRTypes[i] = genericCLRType.clrType;
+                        genericCLRTypes[i] = genericCLRType.typeForCLR;
                         continue;
                     }
                     throw new NotSupportedException();
                 }
-                var type = clrType.MakeGenericType(genericCLRTypes);
+                var type = typeForCLR.MakeGenericType(genericCLRTypes);
                 var self = new CLRGenericSpecificationType(this, genericArugments, type, Environment);
                 return self;
             }
 
             public override string FullName
             {
-                get { return clrType.FullName; }
+                get { return typeForCLR.FullName; }
             }
 
             public override string FullQulifiedName
             {
-                get { return clrType.FullName; }
+                get { return typeForCLR.FullName; }
             }
 
         }

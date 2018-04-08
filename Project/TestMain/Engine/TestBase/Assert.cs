@@ -1,5 +1,4 @@
-﻿using ILInterpreter.Environment.TypeSystem;
-using TestMain.TestBase;
+﻿using TestMain.TestBase;
 
 namespace TestMain.Engine.TestBase
 {

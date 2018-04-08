@@ -1,5 +1,4 @@
 ﻿using System;
-using ILInterpreter.Support;
 using Mono.Cecil;
 
 namespace ILInterpreter.Environment.TypeSystem.Runtime
@@ -13,7 +12,7 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
             public RuntimePointerType(ILType elementType, PointerType reference, ILEnvironment env) : base(reference, env)
             {
                 this.elementType = elementType;
-                typeForClr = elementType.TypeForCLR.MakePointerType();
+                typeForCLR = elementType.TypeForCLR.MakePointerType();
             }
 
             private readonly ILType elementType;
@@ -33,10 +32,10 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
                 get { return true; }
             }
 
-            private readonly Type typeForClr;
+            private readonly Type typeForCLR;
             public override Type TypeForCLR
             {
-                get { return typeForClr; }
+                get { return typeForCLR; }
             }
 
             public override string FullName
@@ -54,41 +53,15 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
                 get { return null; }
             }
 
-            internal override ILType CreateGenericTypeInternal(FastList<ILType> genericArugments)
+            public override bool IsAbstract
             {
-                throw new NotImplementedException();
+                get { return false; }
             }
 
-            public override bool IsGenericTypeDefinition
+            public override bool IsSealed
             {
-                get { throw new NotImplementedException(); }
+                get { return false; }
             }
-
-            public override bool IsGenericParameter
-            {
-                get { throw new NotImplementedException(); }
-            }
-
-            public override bool IsGenericType
-            {
-                get { throw new NotImplementedException(); }
-            }
-
-            public override ILType GenericTypeDefinition
-            {
-                get { throw new NotImplementedException(); }
-            }
-
-            public override IListView<ILType> GenericArguments
-            {
-                get { throw new NotImplementedException(); }
-            }
-
-            public override int GenericParameterPosition
-            {
-                get { throw new NotImplementedException(); }
-            }
-
         }
     }
 }

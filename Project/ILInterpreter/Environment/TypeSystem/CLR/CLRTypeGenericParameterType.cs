@@ -19,7 +19,7 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
 
             public override int GenericParameterPosition
             {
-                get { return clrType.GenericParameterPosition; }
+                get { return typeForCLR.GenericParameterPosition; }
             }
 
             private ILType declaringType;
@@ -45,7 +45,7 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
                     {
                         return;
                     }
-                    declaringType = Environment.GetType(clrType.DeclaringType);
+                    declaringType = Environment.GetType(typeForCLR.DeclaringType);
                     isDeclaringTypeInit = true;
                 }
             }

@@ -1,11 +1,9 @@
 ﻿using System;
-using ILInterpreter.Interpreter;
-using ILInterpreter.Support;
 using Mono.Cecil;
 
 namespace ILInterpreter.Environment.TypeSystem.Runtime
 {
-    internal abstract partial class RuntimeType : ILType
+    internal abstract partial class RuntimeType
     {
 
         private sealed class RuntimeByRefType : RuntimeType
@@ -14,7 +12,7 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
             public RuntimeByRefType(ILType elementType, ByReferenceType reference, ILEnvironment env) : base(reference, env)
             {
                 this.elementType = elementType;
-                typeForClr = elementType.TypeForCLR.MakeByRefType();
+                typeForCLR = elementType.TypeForCLR.MakeByRefType();
             }
 
             private readonly ILType elementType;
@@ -29,11 +27,10 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
                 get { return elementType; }
             }
 
-            private readonly Type typeForClr;
-
+            private readonly Type typeForCLR;
             public override Type TypeForCLR
             {
-                get { return typeForClr; }
+                get { return typeForCLR; }
             }
 
             public override string FullName
@@ -51,45 +48,21 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
                 get { return null; }
             }
 
+            public override bool IsAbstract
+            {
+                get { return false; }
+            }
+
+            public override bool IsSealed
+            {
+                get { return false; }
+            }
+
             public override bool IsByRef
             {
                 get { return true; }
             }
 
-            internal override ILType CreateGenericTypeInternal(FastList<ILType> genericArugments)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override bool IsGenericTypeDefinition
-            {
-                get { throw new NotImplementedException(); }
-            }
-
-            public override bool IsGenericParameter
-            {
-                get { throw new NotImplementedException(); }
-            }
-
-            public override bool IsGenericType
-            {
-                get { throw new NotImplementedException(); }
-            }
-
-            public override ILType GenericTypeDefinition
-            {
-                get { throw new NotImplementedException(); }
-            }
-
-            public override IListView<ILType> GenericArguments
-            {
-                get { throw new NotImplementedException(); }
-            }
-
-            public override int GenericParameterPosition
-            {
-                get { throw new NotImplementedException(); }
-            }
         }
 
     }

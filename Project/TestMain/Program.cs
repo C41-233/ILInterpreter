@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using ILInterpreter.Environment;
-using Mono.Cecil;
 using TestMain.Engine;
-using TestMain.Engine.TestBase;
-using TestMain.TestCase;
 
 namespace TestMain
 {
@@ -20,6 +14,7 @@ namespace TestMain
 
         private static void Test()
         {
+            Console.WriteLine(typeof(int).MakeByRefType().IsAbstract);
         }
 
     }

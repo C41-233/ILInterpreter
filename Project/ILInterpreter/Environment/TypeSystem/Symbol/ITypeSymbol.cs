@@ -9,7 +9,7 @@ namespace ILInterpreter.Environment.TypeSystem.Symbol
 
         public string AssemblyQualifiedName
         {
-            get { return AssemblyName != null ? FullName + AssemblyName : FullName; }
+            get { return AssemblyName != null ? FullName + ", " + AssemblyName : FullName; }
         }
 
         protected ITypeSymbol(AssemblyName assembly)

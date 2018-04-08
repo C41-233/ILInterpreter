@@ -47,40 +47,37 @@ namespace ILInterpreter.Environment.TypeSystem
         {
             var sb = new StringBuilder();
 
-            var pointerType = reference as PointerType;
-            if (pointerType != null)
+            // ReSharper disable once CanBeReplacedWithTryCastAndCheckForNull
+            if (reference is PointerType)
             {
+                var pointerType = (PointerType) reference;
                 var element = pointerType.GetElementType();
                 sb.Append(GetTypeName(element, false));
                 sb.Append('*');
             }
-
-            var refType = reference as ByReferenceType;
-            if (refType != null)
+            else if (reference is ByReferenceType)
             {
+                var refType = (ByReferenceType) reference;
                 var element = refType.GetElementType();
                 sb.Append(GetTypeName(element, false));
                 sb.Append('&');
             }
-
-            var arrayType = reference as ArrayType;
-            if (arrayType != null)
+            else if (reference is ArrayType)
             {
+                var arrayType = (ArrayType) reference;
                 var element = arrayType.GetElementType();
                 sb.Append(GetTypeName(element, false));
                 sb.Append(GetArrayString(arrayType.Rank));
             }
-
-            var definition = reference as TypeDefinition;
-            if (definition != null)
+            else
             {
-                sb.Append(definition.FullName);
+                sb.Append(reference.FullName);
             }
 
             if (assembly)
             {
                 sb.Append(", ");
-                sb.Append(reference.Module.Assembly.FullName);
+                sb.Append(reference.Scope.Name);
             }
             return sb.ToString();
         }

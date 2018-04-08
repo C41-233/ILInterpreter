@@ -1,9 +1,9 @@
-﻿using System;
+﻿using ILInterpreter.Support;
 using Mono.Cecil;
 
 namespace ILInterpreter.Environment.TypeSystem.Runtime
 {
-    internal abstract partial class RuntimeType
+    internal abstract partial class RuntimeType : ILType
     {
 
         protected readonly TypeReference reference; 
@@ -84,13 +84,49 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
             return new RuntimeArrayType(this, array, Environment);
         }
 
+
+        internal override ILType CreateGenericTypeInternal(FastList<ILType> genericArugments)
+        {
+            return null;
+        }
+
+        public override bool IsGenericTypeDefinition
+        {
+            get { return false; }
+        }
+
+        public override bool IsGenericParameter
+        {
+            get { return false; }
+        }
+
+        public override bool IsGenericType
+        {
+            get { return false; }
+        }
+
+        public override ILType GenericTypeDefinition
+        {
+            get { return null; }
+        }
+
+        public override IListView<ILType> GenericArguments
+        {
+            get { return null; }
+        }
+
+        public override int GenericParameterPosition
+        {
+            get { return -1; }
+        }
+
         internal static RuntimeType Create(TypeDefinition definition, ILEnvironment env)
         {
             if (definition.IsGenericParameter)
             {
                 return new RuntimeTypeGenericParameterType(definition, env);
             }
-            return null;
+            return new RuntimeDirectType(definition, env);
         }
 
     }

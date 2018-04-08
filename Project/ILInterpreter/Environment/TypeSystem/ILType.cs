@@ -61,6 +61,15 @@ namespace ILInterpreter.Environment.TypeSystem
 
         public abstract ILType DeclaringType { get; }
 
+        public abstract bool IsAbstract { get; }
+
+        public abstract bool IsSealed { get; }
+
+        public bool IsStatic
+        {
+            get { return IsAbstract && IsSealed; }
+        }
+
         #region Ref
         private ILType byRefType;
 

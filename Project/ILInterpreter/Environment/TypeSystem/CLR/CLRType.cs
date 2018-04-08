@@ -10,14 +10,14 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
 
         internal CLRType(Type type, ILEnvironment env) : base(env)
         {
-            clrType = type;
+            typeForCLR = type;
             assemblyName = new AssemblyName(type.Assembly.GetName());
         }
 
-        protected readonly Type clrType;
+        protected readonly Type typeForCLR;
         public sealed override Type TypeForCLR
         {
-            get { return clrType; }
+            get { return typeForCLR; }
         }
 
         private readonly AssemblyName assemblyName;
@@ -28,12 +28,12 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
 
         public sealed override string Namespace
         {
-            get { return clrType.Namespace; }
+            get { return typeForCLR.Namespace; }
         }
 
         public sealed override string Name
         {
-            get { return clrType.Name; }
+            get { return typeForCLR.Name; }
         }
 
         public override ILType ElementType
@@ -67,9 +67,9 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
                 {
                     return;
                 }
-                if (clrType.BaseType != null)
+                if (typeForCLR.BaseType != null)
                 {
-                    baseType = Environment.GetType(clrType.BaseType);
+                    baseType = Environment.GetType(typeForCLR.BaseType);
                 }
                 isBaseTypeInit = true;
             }
@@ -80,6 +80,16 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
             get { return null; }
         }
 
+        public sealed override bool IsAbstract
+        {
+            get { return typeForCLR.IsAbstract; }
+        }
+
+        public sealed override bool IsSealed
+        {
+            get { return typeForCLR.IsSealed; }
+        }
+
         #region Ref
         public override bool IsByRef
         {
@@ -88,7 +98,7 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
 
         internal sealed override ILType CreateByRefTypeInternal()
         {
-            var type = clrType.MakeByRefType();
+            var type = typeForCLR.MakeByRefType();
             var self = new CLRByRefType(this, type, Environment);
             return self;
         }
@@ -102,7 +112,7 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
 
         internal sealed override ILType CreatePointerTypeInternal()
         {
-            var type = clrType.MakePointerType();
+            var type = typeForCLR.MakePointerType();
             var self = new CLRPointerType(this, type, Environment);
             return self;
         }
@@ -121,7 +131,7 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
 
         internal sealed override ILType CreateArrayTypeInternal(int rank)
         {
-            var type = rank == 1 ? clrType.MakeArrayType() : clrType.MakeArrayType(rank);
+            var type = rank == 1 ? typeForCLR.MakeArrayType() : typeForCLR.MakeArrayType(rank);
             var self = new CLRArrayType(this, type, Environment);
             return self;
         }
@@ -156,12 +166,12 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
 
         public override int GenericParameterPosition
         {
-            get { throw new InvalidOperationException(string.Format("type {0} is not GenericParameterType.", FullName)); }
+            get { return -1; }
         }
 
         internal override ILType CreateGenericTypeInternal(FastList<ILType> genericArugments)
         {
-            throw new InvalidOperationException(string.Format("type {0} is not GenericDefinitionType.", FullName));
+            return null;
         }
         #endregion
 

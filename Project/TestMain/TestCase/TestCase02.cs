@@ -34,6 +34,10 @@ namespace TestMain.TestCase
         [Test]
         public static void Test01()
         {
+            var type = env.GetType("TestCase.Test01");
+            Assert.AreEquals(type.FullName, "TestCase.Test01");
+            Assert.AreEquals(type.BaseType.TypeForCLR, typeof(object));
+            Assert.AreSame(type.MakeArrayType(), env.GetType("TestCase.Test01[]"));
         }
 
     }
