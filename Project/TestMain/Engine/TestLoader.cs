@@ -10,8 +10,6 @@ namespace TestMain.Engine
     public static class TestLoader
     {
 
-        private static readonly object[] EmptyArgs = new object[0];
-
         public static void Run()
         {
             var beforeClasses = new List<MethodInfo>();
@@ -70,7 +68,7 @@ namespace TestMain.Engine
 
                 foreach (var method in beforeClasses)
                 {
-                    method.Invoke(null, EmptyArgs);
+                    method.Invoke(null, null);
                 }
 
                 foreach (var run in runs.OrderBy(method => method.Name))
@@ -79,11 +77,11 @@ namespace TestMain.Engine
                     totalCases++;
                     foreach (var before in befores)
                     {
-                        before.Invoke(null, EmptyArgs);
+                        before.Invoke(null, null);
                     }
                     try
                     {
-                        run.Invoke(null, EmptyArgs);
+                        run.Invoke(null, null);
                         Console.WriteLine("pass");
                         passCases++;
                     }
@@ -94,7 +92,7 @@ namespace TestMain.Engine
                     }
                     foreach (var after in afters)
                     {
-                        after.Invoke(null, EmptyArgs);
+                        after.Invoke(null, null);
                     }
                 }
 

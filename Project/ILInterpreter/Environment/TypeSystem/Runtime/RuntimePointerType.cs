@@ -1,4 +1,5 @@
 ﻿using System;
+using ILInterpreter.Environment.Method;
 using Mono.Cecil;
 
 namespace ILInterpreter.Environment.TypeSystem.Runtime
@@ -6,25 +7,12 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
     internal abstract partial class RuntimeType
     {
 
-        private sealed class RuntimePointerType : RuntimeType
+        private sealed class RuntimePointerType : RuntimeSpecificationType
         {
 
-            public RuntimePointerType(ILType elementType, PointerType reference, ILEnvironment env) : base(reference, env)
+            public RuntimePointerType(ILType elementType, PointerType reference, ILEnvironment env) : base(elementType, reference, env)
             {
-                this.elementType = elementType;
                 typeForCLR = elementType.TypeForCLR.MakePointerType();
-            }
-
-            private readonly ILType elementType;
-
-            public override bool HasElementType
-            {
-                get { return true; }
-            }
-
-            public override ILType ElementType
-            {
-                get { return elementType; }
             }
 
             public override bool IsPointer
@@ -53,15 +41,21 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
                 get { return null; }
             }
 
-            public override bool IsAbstract
-            {
-                get { return false; }
-            }
-
             public override bool IsSealed
             {
                 get { return false; }
             }
+
+            public override bool IsPublic
+            {
+                get { return false; }
+            }
+
+            public override ILMethod GetDeclaredMethod(string name, ILType[] genericArguments, ILType[] parameterTypes, ILType returnType)
+            {
+                return null;
+            }
+
         }
     }
 }

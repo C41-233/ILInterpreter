@@ -35,7 +35,7 @@ namespace ILInterpreter.Environment.TypeSystem
                 {
                     foreach (var type in genericTypes)
                     {
-                        if (EnumerableSupport.Equals(type.GenericArguments, types))
+                        if (CompareSupport.Equals(type.GenericArguments, types))
                         {
                             return type;
                         }
@@ -62,7 +62,12 @@ namespace ILInterpreter.Environment.TypeSystem
 
         public ILType MakeGenericType(params Type[] genericArguments)
         {
-            return MakeGenericType(genericArguments.Select(t=>Environment.GetType(t)).ToArray());
+            var arguments = new ILType[genericArguments.Length];
+            for (var i = 0; i < genericArguments.Length; i++)
+            {
+                arguments[i] = Environment.GetType(genericArguments[i]);
+            }
+            return MakeGenericType(arguments);
         }
 
         public abstract bool IsGenericTypeDefinition { get; }

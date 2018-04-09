@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using ILInterpreter.Environment.Method;
 using Mono.Cecil;
 
 namespace ILInterpreter.Environment.TypeSystem.Runtime
@@ -7,12 +8,11 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
     internal abstract partial class RuntimeType
     {
 
-        private sealed class RuntimeArrayType : RuntimeType
+        private sealed class RuntimeArrayType : RuntimeSpecificationType
         {
 
-            public RuntimeArrayType(ILType elementType, ArrayType reference, ILEnvironment env) : base(reference, env)
+            public RuntimeArrayType(ILType elementType, ArrayType reference, ILEnvironment env) : base(elementType, reference, env)
             {
-                this.elementType = elementType;
                 rank = reference.Rank;
                 if (rank == 1)
                 {
@@ -22,18 +22,6 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
                 {
                     typeForCLR = elementType.TypeForCLR.MakeArrayType(rank);
                 }
-            }
-
-            private readonly ILType elementType;
-
-            public override bool HasElementType
-            {
-                get { return true; }
-            }
-
-            public override ILType ElementType
-            {
-                get { return elementType; }
             }
 
             public override bool IsArray
@@ -48,14 +36,14 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
                 get { return rank; }
             }
 
-            public override bool IsAbstract
-            {
-                get { return false; }
-            }
-
             public override bool IsSealed
             {
                 get { return true; }
+            }
+
+            public override bool IsPublic
+            {
+                get { return elementType.IsPublic; }
             }
 
             private readonly Type typeForCLR;

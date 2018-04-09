@@ -2,11 +2,17 @@
 using ILInterpreter.Environment.TypeSystem.CLR;
 using ILInterpreter.Environment.TypeSystem.Symbol;
 using ILInterpreter.Support;
+using Mono.Cecil;
 
 namespace ILInterpreter.Environment
 {
     public sealed partial class ILEnvironment
     {
+
+        internal ILType GetType(TypeReference reference)
+        {
+            return GetType(reference.GetTypeAssemblyQualifiedName());
+        }
 
         private ILType GetTypeInternal(ITypeSymbol symbol)
         {
@@ -17,7 +23,7 @@ namespace ILInterpreter.Environment
                 return CreateTypeInternal(symbol);
             }
 
-            int currentScore = -1;
+            int currentScore = int.MinValue;
             ILType currentType = null;
             foreach (var type in list)
             {
@@ -31,7 +37,16 @@ namespace ILInterpreter.Environment
                     }
                 }
             }
-            return currentType ?? CreateTypeInternal(symbol);
+            if (currentType == null)
+            {
+                return CreateTypeInternal(symbol);
+            }
+            if (currentScore >= 0)
+            {
+                return currentType;
+            }
+            var typeInternal = CreateTypeInternal(symbol);
+            return typeInternal ?? currentType;
         }
 
         private ILType CreateTypeInternal(ITypeSymbol symbol)

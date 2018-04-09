@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using TestMain.Engine;
+using TestMain.TestCase;
 
 namespace TestMain
 {
@@ -14,7 +16,6 @@ namespace TestMain
 
         private static void Test()
         {
-            Console.WriteLine(typeof(int).MakeByRefType().IsAbstract);
         }
 
     }

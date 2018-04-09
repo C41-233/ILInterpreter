@@ -2,11 +2,23 @@
 
 namespace ILInterpreter.Support
 {
-    internal static class EnumerableSupport
+    internal static class CompareSupport
     {
 
         public static bool Equals(IListView<ILType> a , ILType[] b)
         {
+            if (a == null && b == null)
+            {
+                return true;
+            }
+            if (a == null && b.Length != 0)
+            {
+                return false;
+            }
+            if (b == null && a.Count != 0)
+            {
+                return false;
+            }
             if (a.Count != b.Length)
             {
                 return false;
@@ -20,6 +32,11 @@ namespace ILInterpreter.Support
                 }
             }
             return true;
+        }
+
+        public static bool Equals(ILType[] a, IListView<ILType> b)
+        {
+            return Equals(b, a);
         }
 
     }

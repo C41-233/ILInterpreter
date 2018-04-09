@@ -48,9 +48,12 @@
     <Compile Include="TestCase\Constant.cs" />
     <Compile Include="TestCase\TestCase01.cs" />
     <Compile Include="TestCase\TestCase02.cs" />
+    <Compile Include="TestCase\TestCase03.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ILInterpreter\ILInterpreter.csproj">

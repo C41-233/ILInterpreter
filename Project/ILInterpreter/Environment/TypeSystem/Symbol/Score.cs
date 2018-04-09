@@ -45,40 +45,37 @@
                 {
                     return Result(out score, -1);
                 }
-                return GetAssemblyWeakMatchScore(type.AssemblyName, symbol.AssemblyName, out score);
+                score = GetAssemblyWeakMatchScore(type.AssemblyName, symbol.AssemblyName);
+                return true;
             }
             return Result(out score, -1);
         }
 
-        public static bool GetAssemblyWeakMatchScore(AssemblyName self, AssemblyName other, out int score)
+        public static int GetAssemblyWeakMatchScore(AssemblyName self, AssemblyName other)
         {
             if (other == null)
             {
-                return Result(out score, 0);
+                return 0;
             }
 
             int total = 0;
-            if (!FillWeakMatchScore(self.Name, other.Name, ref total))
-            {
-                score = -1;
-                return false;
-            }
-            score = total;
-            return true;
+            FillWeakMatchScore(self.Name, other.Name, ref total);
+            FillWeakMatchScore(self.Version.ToString(), other.Version != null ? other.Version.ToString() : null, ref total);
+            return total;
         }
 
-        private static bool FillWeakMatchScore(string a, string b, ref int score)
+        private static void FillWeakMatchScore(string a, string b, ref int score)
         {
             if (b == null)
             {
-                return true;
+                return;
             }
             if (a != b)
             {
-                return false;
+                score--;
+                return;
             }
             score++;
-            return true;
         }
     }
 }

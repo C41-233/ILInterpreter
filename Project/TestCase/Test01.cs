@@ -10,6 +10,17 @@ namespace TestCase
             Console.WriteLine("Hello world!");
         }
 
+
+        public class TestClass
+        {
+
+            public int Calc(int v)
+            {
+                return v * v;   
+            }
+
+        }
+
     }
 
 }

@@ -29,6 +29,14 @@ namespace TestMain.Engine.TestBase
             }
         }
 
+        public static void AreEquals(bool actual, bool expected)
+        {
+            if (actual != expected)
+            {
+                throw new AssertException($"Assert fail expected={expected} actual={actual}");
+            }
+        }
+
         public static void AreSame(object actual, object expected)
         {
             if (!ReferenceEquals(actual, expected))

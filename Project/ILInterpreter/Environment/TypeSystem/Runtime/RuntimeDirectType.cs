@@ -26,7 +26,9 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
                 {
                     if (fullName == null)
                     {
-                        fullName = definition.FullName;
+                        var name = definition.FullName;
+                        name = name.Replace('/', '+');
+                        fullName = name;
                     }
                     return fullName;
                 }

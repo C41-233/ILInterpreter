@@ -1,4 +1,5 @@
 ﻿using System;
+using ILInterpreter.Environment.Method;
 using ILInterpreter.Support;
 
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
@@ -80,6 +81,7 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
             get { return null; }
         }
 
+        #region Modifiers
         public sealed override bool IsAbstract
         {
             get { return typeForCLR.IsAbstract; }
@@ -89,6 +91,19 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
         {
             get { return typeForCLR.IsSealed; }
         }
+
+        public override bool IsPublic
+        {
+            get { return typeForCLR.IsPublic; }
+        }
+
+        public override bool IsNestedPublic
+        {
+            get { return typeForCLR.IsNestedPublic; }
+        }
+
+        #endregion
+
 
         #region Ref
         public override bool IsByRef
@@ -174,6 +189,13 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
             return null;
         }
         #endregion
+
+        public override ILMethod GetDeclaredMethod(string name, ILType[] genericArguments, ILType[] parameterTypes, ILType returnType)
+        {
+            //todo
+            return null;
+        }
+
 
         internal static CLRType Create(Type type, ILEnvironment env)
         {

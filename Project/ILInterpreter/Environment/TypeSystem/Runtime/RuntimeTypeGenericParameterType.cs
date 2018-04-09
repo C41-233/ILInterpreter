@@ -51,7 +51,7 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
                     {
                         return;
                     }
-                    declaringType = Environment.GetType(definition.DeclaringType.GetTypeAssemblyQualifiedName());
+                    declaringType = Environment.GetType(definition.DeclaringType);
                 }
             }
 

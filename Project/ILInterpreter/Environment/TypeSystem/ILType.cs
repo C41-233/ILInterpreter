@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ILInterpreter.Environment.Method;
 using ILInterpreter.Support;
 
 namespace ILInterpreter.Environment.TypeSystem
@@ -61,6 +62,8 @@ namespace ILInterpreter.Environment.TypeSystem
 
         public abstract ILType DeclaringType { get; }
 
+        #region Modifiers
+
         public abstract bool IsAbstract { get; }
 
         public abstract bool IsSealed { get; }
@@ -69,6 +72,12 @@ namespace ILInterpreter.Environment.TypeSystem
         {
             get { return IsAbstract && IsSealed; }
         }
+
+        public abstract bool IsPublic { get; }
+
+        public abstract bool IsNestedPublic { get; }
+
+        #endregion
 
         #region Ref
         private ILType byRefType;
@@ -165,6 +174,12 @@ namespace ILInterpreter.Environment.TypeSystem
             sb.Append(AssemblyName);
             return Environment.GetType(sb.ToString());
         }
+        #endregion
+
+        #region Methods
+
+        public abstract ILMethod GetDeclaredMethod(string name, ILType[] genericArguments, ILType[] parameterTypes, ILType returnType);
+
         #endregion
 
     }

@@ -77,7 +77,7 @@ namespace ILInterpreter.Environment.TypeSystem
             if (assembly)
             {
                 sb.Append(", ");
-                sb.Append(reference.Scope.Name);
+                sb.Append(reference.Scope);
             }
             return sb.ToString();
         }

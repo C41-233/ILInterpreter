@@ -1,4 +1,5 @@
 ﻿using System;
+using ILInterpreter.Environment.Method;
 using Mono.Cecil;
 
 namespace ILInterpreter.Environment.TypeSystem.Runtime
@@ -6,25 +7,12 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
     internal abstract partial class RuntimeType
     {
 
-        private sealed class RuntimeByRefType : RuntimeType
+        private sealed class RuntimeByRefType : RuntimeSpecificationType
         {
 
-            public RuntimeByRefType(ILType elementType, ByReferenceType reference, ILEnvironment env) : base(reference, env)
+            public RuntimeByRefType(ILType elementType, ByReferenceType reference, ILEnvironment env) : base(elementType, reference, env)
             {
-                this.elementType = elementType;
                 typeForCLR = elementType.TypeForCLR.MakeByRefType();
-            }
-
-            private readonly ILType elementType;
-
-            public override bool HasElementType
-            {
-                get { return true; }
-            }
-
-            public override ILType ElementType
-            {
-                get { return elementType; }
             }
 
             private readonly Type typeForCLR;
@@ -48,12 +36,12 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
                 get { return null; }
             }
 
-            public override bool IsAbstract
+            public override bool IsSealed
             {
                 get { return false; }
             }
 
-            public override bool IsSealed
+            public override bool IsPublic
             {
                 get { return false; }
             }
@@ -61,6 +49,11 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
             public override bool IsByRef
             {
                 get { return true; }
+            }
+
+            public override ILMethod GetDeclaredMethod(string name, ILType[] genericArguments, ILType[] parameterTypes, ILType returnType)
+            {
+                return null;
             }
 
         }

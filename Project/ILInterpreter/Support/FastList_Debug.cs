@@ -43,6 +43,11 @@ namespace ILInterpreter.Support
             return list.ToArray();
         }
 
+        public void Trim()
+        {
+            list.TrimExcess();
+        }
+
     }
 
 }

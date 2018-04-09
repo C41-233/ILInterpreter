@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using SystemAssemblyName = System.Reflection.AssemblyName;
 
 namespace ILInterpreter.Environment.TypeSystem
@@ -28,6 +29,11 @@ namespace ILInterpreter.Environment.TypeSystem
         public string Name
         {
             get { return name.Name; }
+        }
+
+        public Version Version
+        {
+            get { return name.Version; }
         }
 
         public override string ToString()

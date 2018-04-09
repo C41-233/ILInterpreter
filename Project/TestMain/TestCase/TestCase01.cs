@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ILInterpreter.Environment;
 using TestMain.Engine.TestBase;
 
@@ -80,6 +81,7 @@ namespace TestMain.TestCase
             Assert.AreSame(env.GetType(type), env.GetType("System.Collections.Generic.Dictionary`2[System.Collections.Generic.List`1[System.Int32],System.Int32[,]]"));
             Assert.AreSame(env.GetType(type), env.GetType(typeof(Dictionary<,>)).MakeGenericType(typeof(List<int>),typeof(int[,])));
         }
+
     }
 
 }
