@@ -1,20 +1,31 @@
-﻿using ILInterpreter.Environment.TypeSystem;
-using ILInterpreter.Environment.TypeSystem.Runtime;
+﻿using System.Reflection;
+using ILInterpreter.Environment.TypeSystem;
+using ILInterpreter.Environment.TypeSystem.CLR;
 using ILInterpreter.Support;
-using Mono.Cecil;
 
-namespace ILInterpreter.Environment.Method.Runtime
+namespace ILInterpreter.Environment.Method.CLR
 {
-    internal sealed partial class RuntimeMethod : ILMethod
+    internal sealed class CLRMethod : ILMethod
     {
 
-        private readonly RuntimeType type;
-        private readonly MethodDefinition definition;
+        private readonly MethodInfo methodInfo;
 
-        public RuntimeMethod(MethodDefinition definition, RuntimeType type)
+        public CLRMethod(MethodInfo method, CLRType type)
         {
-            this.type = type;
-            this.definition = definition;
+            methodInfo = method;
+            declaredType = type;
+        }
+
+        private readonly CLRType declaredType;
+
+        public override ILType DeclaringType
+        {
+            get { return declaredType; }
+        }
+
+        public override string Name
+        {
+            get { return methodInfo.Name; }
         }
 
         private FastList<MethodParameter> parameters;
@@ -35,30 +46,19 @@ namespace ILInterpreter.Environment.Method.Runtime
                     return;
                 }
 
-                var monoParameters = definition.Parameters;
-                parameters = new FastList<MethodParameter>(monoParameters.Count);
-                foreach (var monoParameter in monoParameters)
+                var parameterInfos = methodInfo.GetParameters();
+                parameters = new FastList<MethodParameter>(parameterInfos.Length);
+                foreach (var parameterInfo in parameterInfos)
                 {
-                    var parameter = new MethodParameter(
-                        Environment.GetType(monoParameter.ParameterType)
-                    );
-                    parameters.Add(parameter);
+                    parameters.Add(new MethodParameter(
+                        Environment.GetType(parameterInfo.ParameterType)    
+                    ));
                 }
 
-                returnType = Environment.GetType(definition.ReturnType);
+                returnType = Environment.GetType(methodInfo.ReturnType);
 
                 isDefinitionInit = true;
             }
-        }
-
-        public override ILType DeclaringType
-        {
-            get { return type; }
-        }
-
-        public override string Name
-        {
-            get { return definition.Name; }
         }
 
         public override IListView<MethodParameter> Parameters
@@ -90,24 +90,26 @@ namespace ILInterpreter.Environment.Method.Runtime
             {
                 return false;
             }
-            for (var i = 0; i < parameters.Count; i++)
+
+            for (var i=0; i<parameterTypes.Length; i++)
             {
-                if (parameters[i].ParameterType != parameterTypes[i])
+                if (parameterTypes[i] != parameters[i].ParameterType)
                 {
                     return false;
-                }
+                }        
             }
 
             if (this.returnType != returnType)
             {
                 return false;
             }
+
             return true;
         }
 
         public override object Invoke(object instance, params object[] parameters)
         {
-            return Environment.Invoke(this, instance, parameters);
+            return methodInfo.Invoke(instance, parameters);
         }
     }
 }

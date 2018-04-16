@@ -85,23 +85,25 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
             {
                 lock (Environment)
                 {
-                    _methods = new Dictionary<string, FastList<RuntimeMethod>>();
+                    var methods = new Dictionary<string, FastList<RuntimeMethod>>();
                     foreach (var method in definition.Methods)
                     {
                         FastList<RuntimeMethod> list;
-                        if (!_methods.TryGetValue(method.Name, out list))
+                        if (!methods.TryGetValue(method.Name, out list))
                         {
                             list = new FastList<RuntimeMethod>();
-                            _methods.Add(method.Name, list);
+                            methods.Add(method.Name, list);
                         }
                         var runtimeMethod = new RuntimeMethod(method, this);
                         list.Add(runtimeMethod);
                     }
 
-                    foreach (var list in _methods.Values)
+                    foreach (var list in methods.Values)
                     {
                         list.Trim();
                     }
+
+                    _methods = methods;
                 }
             }
 

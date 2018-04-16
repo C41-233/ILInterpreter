@@ -14,6 +14,14 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
             assemblyName = new AssemblyName(reference.Module.Assembly.FullName);
         }
 
+        public TypeReference TypeReference
+        {
+            get
+            {
+                return reference;
+            }
+        }
+
         private readonly AssemblyName assemblyName;
 
         public sealed override AssemblyName AssemblyName

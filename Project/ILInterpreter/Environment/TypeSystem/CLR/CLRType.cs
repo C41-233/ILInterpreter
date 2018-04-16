@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using ILInterpreter.Environment.Method;
+using ILInterpreter.Environment.Method.CLR;
 using ILInterpreter.Support;
 
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
@@ -190,11 +193,57 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
         }
         #endregion
 
+        #region Methods
+        private Dictionary<string, FastList<CLRMethod>> _methods;
+
+        private Dictionary<string, FastList<CLRMethod>> Methods
+        {
+            get
+            {
+                if (_methods == null)
+                {
+                    InitMethods();
+                }
+                return _methods;
+            }
+        }
+
+        private void InitMethods()
+        {
+            lock (Environment)
+            {
+                if (_methods != null)
+                {
+                    return;
+                }
+                var methods = new Dictionary<string, FastList<CLRMethod>>();
+                var clrMethods = typeForCLR.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.NonPublic | BindingFlags.Public);
+                foreach (var method in clrMethods)
+                {
+                    FastList<CLRMethod> list;
+                    if (!methods.TryGetValue(method.Name, out list))
+                    {
+                        list = new FastList<CLRMethod>();
+                        methods.Add(method.Name, list);
+                    }
+                    list.Add(new CLRMethod(method, this));
+                }
+
+                foreach (var list in methods.Values)
+                {
+                    list.Trim();
+                }
+
+                _methods = methods;
+            }
+        }
+
         public override ILMethod GetDeclaredMethod(string name, ILType[] genericArguments, ILType[] parameterTypes, ILType returnType)
         {
             //todo
             return null;
         }
+        #endregion
 
 
         internal static CLRType Create(Type type, ILEnvironment env)

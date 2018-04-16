@@ -11,7 +11,24 @@ namespace ILInterpreter.Environment
 
         internal ILType GetType(TypeReference reference)
         {
-            return GetType(reference.GetTypeAssemblyQualifiedName());
+            ILType type;
+            lock (this)
+            {
+                if (TypeReferenceToTypes.TryGetValue(reference.GetHashCode(), out type))
+                {
+                    return type;
+                }
+            }
+            type = GetType(reference.GetTypeAssemblyQualifiedName());
+            if (type == null)
+            {
+                return null;
+            }
+            lock (this)
+            {
+                TypeReferenceToTypes[reference.GetHashCode()] = type;
+            }
+            return type;
         }
 
         private ILType GetTypeInternal(ITypeSymbol symbol)

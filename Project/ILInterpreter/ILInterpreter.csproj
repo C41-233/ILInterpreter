@@ -22,6 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>4</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,7 +31,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>3</LangVersion>
+    <LangVersion>4</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Cecil.20">
@@ -39,8 +41,12 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Environment\Method\CLR\CLRMethod.cs" />
     <Compile Include="Environment\Method\ILMethod.cs" />
+    <Compile Include="Environment\Method\MethodParameter.cs" />
+    <Compile Include="Environment\Method\Runtime\Instruction.cs" />
     <Compile Include="Environment\Method\Runtime\RuntimeMethod.cs" />
+    <Compile Include="Environment\Method\Runtime\RuntimeMethod_Execute.cs" />
     <Compile Include="Environment\TypeSystem\CLR\CLRArrayType.cs" />
     <Compile Include="Environment\TypeSystem\CLR\CLRTypeGenericParameterType.cs" />
     <Compile Include="Environment\TypeSystem\CLR\CLRGenericSpecificationType.cs" />
@@ -55,7 +61,12 @@
     <Compile Include="Environment\TypeSystem\Runtime\RuntimeDefinitionType.cs" />
     <Compile Include="Environment\TypeSystem\Runtime\RuntimeSpecificationType.cs" />
     <Compile Include="Environment\TypeSystem\Runtime\RuntimeTypeGenericParameterType.cs" />
-    <Compile Include="Interpreter\RuntimeTypeInstance.cs" />
+    <Compile Include="Interpreter\RuntimeInterpreter.cs" />
+    <Compile Include="Interpreter\Stack\RuntimeStack.cs" />
+    <Compile Include="Interpreter\Stack\StackObject.cs" />
+    <Compile Include="Interpreter\Stack\StackObjectType.cs" />
+    <Compile Include="Interpreter\StringPool.cs" />
+    <Compile Include="Interpreter\Type\RuntimeTypeInstance.cs" />
     <Compile Include="Support\IdGenerator.cs" />
     <Compile Include="Environment\ILEnvironment.cs" />
     <Compile Include="Environment\ILEnvironment_TypeBuilder.cs" />

@@ -22,6 +22,11 @@ namespace ILInterpreter.Support
             list.Add(element);
         }
 
+        public void RemoveAt(int index)
+        {
+            list.RemoveAt(index);
+        }
+
         public int Count
         {
             get { return list.Count; }
@@ -48,6 +53,10 @@ namespace ILInterpreter.Support
             list.TrimExcess();
         }
 
+        public void Clear()
+        {
+            list.Clear();
+        }
     }
 
 }
