@@ -67,6 +67,7 @@
     <Compile Include="Interpreter\Stack\StackObjectType.cs" />
     <Compile Include="Interpreter\StringPool.cs" />
     <Compile Include="Interpreter\Type\RuntimeTypeInstance.cs" />
+    <Compile Include="Support\Array.cs" />
     <Compile Include="Support\IdGenerator.cs" />
     <Compile Include="Environment\ILEnvironment.cs" />
     <Compile Include="Environment\ILEnvironment_TypeBuilder.cs" />

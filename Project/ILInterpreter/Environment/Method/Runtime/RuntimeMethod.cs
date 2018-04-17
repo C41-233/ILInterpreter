@@ -1,4 +1,5 @@
-﻿using ILInterpreter.Environment.TypeSystem;
+﻿using System;
+using ILInterpreter.Environment.TypeSystem;
 using ILInterpreter.Environment.TypeSystem.Runtime;
 using ILInterpreter.Support;
 using Mono.Cecil;
@@ -82,11 +83,20 @@ namespace ILInterpreter.Environment.Method.Runtime
         public override bool Matches(ILType[] genericArguments, ILType[] parameterTypes, ILType returnType)
         {
             CheckDefinitionInit();
-            if (parameterTypes == null && parameters.Count != 0)
+            if (genericArguments == null)
             {
-                return false;
+                genericArguments = Array<ILType>.Empty;
             }
-            if (parameterTypes.Length != parameters.Count)
+            if (parameterTypes == null)
+            {
+                parameterTypes = Array<ILType>.Empty;
+            }
+            if (returnType == null)
+            {
+                returnType = Environment.GetType(typeof(void));
+            }
+
+            if (parameters.Count != parameterTypes.Length)
             {
                 return false;
             }
@@ -103,6 +113,11 @@ namespace ILInterpreter.Environment.Method.Runtime
                 return false;
             }
             return true;
+        }
+
+        internal override bool Matches(MethodReference reference)
+        {
+            return definition == reference;
         }
 
         public override object Invoke(object instance, params object[] parameters)

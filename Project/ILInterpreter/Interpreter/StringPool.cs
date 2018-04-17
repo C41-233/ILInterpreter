@@ -73,7 +73,7 @@ namespace ILInterpreter.Interpreter
                 {
                     return null;
                 }
-                if (list.Count >= low32)
+                if (low32 >= list.Count)
                 {
                     return null;
                 }

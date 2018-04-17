@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using ILInterpreter.Environment.TypeSystem;
 using ILInterpreter.Support;
+using Mono.Cecil;
 
 namespace ILInterpreter.Environment.Method.Runtime
 {
@@ -41,6 +42,11 @@ namespace ILInterpreter.Environment.Method.Runtime
                 CheckDefinitionInit();
                 return localVariables;
             }
+        }
+
+        public override bool HasThis
+        {
+            get { return definition.HasThis; }
         }
 
         private bool isBodyInit;
@@ -89,7 +95,7 @@ namespace ILInterpreter.Environment.Method.Runtime
             for (var i=0; i < body.Length; i++)
             {
                 var instruction = instructions[i];
-                body[i] = Instruction.Create(instruction.OpCode.Code, instruction.Operand, address);
+                body[i] = Instruction.Create(instruction.OpCode.Code, instruction.Operand, Environment, address);
             }
 
             definition.Body = null;

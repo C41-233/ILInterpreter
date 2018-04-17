@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using ILInterpreter.Interpreter;
+using Mono.Cecil;
 using Mono.Cecil.Cil;
 
 namespace ILInterpreter.Environment.Method.Runtime
@@ -28,7 +30,7 @@ namespace ILInterpreter.Environment.Method.Runtime
         [FieldOffset(8)]
         public int Low32;
 
-        public static Instruction Create(Code code, object operand, Dictionary<Mono.Cecil.Cil.Instruction, int> address)
+        public static Instruction Create(Code code, object operand, ILEnvironment env, Dictionary<Mono.Cecil.Cil.Instruction, int> address)
         {
             var instruction = new Instruction
             {
@@ -36,7 +38,7 @@ namespace ILInterpreter.Environment.Method.Runtime
             };
             switch (code)
             {
-                #region compare & jump
+                #region jump
                 case Code.Leave:
                 case Code.Leave_S:
                 case Code.Br:
@@ -81,6 +83,16 @@ namespace ILInterpreter.Environment.Method.Runtime
                     break;
                 case Code.Ldstr:
                     StringPool.Put((string) operand, out instruction.High32, out instruction.Low32);
+                    break;
+                    #endregion
+
+                #region call
+                case Code.Call:
+                    var methodReference = (MethodReference) operand;
+                    var type = env.GetType(methodReference.DeclaringType);
+                    var method = type.GetDeclaredMethod(methodReference);
+                    instruction.High32 = type.GetHashCode();
+                    instruction.Low32 = method.GetHashCode();
                     break;
                 #endregion
             }

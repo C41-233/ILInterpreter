@@ -67,43 +67,45 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
 
             #region Methods
 
-            private Dictionary<string, FastList<RuntimeMethod>> _methods;
+            private Dictionary<string, FastList<RuntimeMethod>> nameToMethods;
+            private Dictionary<int, RuntimeMethod> idToMethods;
+            private bool isMethodsInit;
 
-            private Dictionary<string, FastList<RuntimeMethod>> Methods
+            private void CheckInitMethods()
             {
-                get
+                if (isMethodsInit)
                 {
-                    if (_methods == null)
-                    {
-                        InitMethods();        
-                    }
-                    return _methods;
+                    return;
                 }
-            }
 
-            private void InitMethods()
-            {
                 lock (Environment)
                 {
-                    var methods = new Dictionary<string, FastList<RuntimeMethod>>();
+                    if (isMethodsInit)
+                    {
+                        return;
+                    }
+                    nameToMethods = new Dictionary<string, FastList<RuntimeMethod>>();
+                    idToMethods = new Dictionary<int, RuntimeMethod>();
+
                     foreach (var method in definition.Methods)
                     {
                         FastList<RuntimeMethod> list;
-                        if (!methods.TryGetValue(method.Name, out list))
+                        if (!nameToMethods.TryGetValue(method.Name, out list))
                         {
                             list = new FastList<RuntimeMethod>();
-                            methods.Add(method.Name, list);
+                            nameToMethods.Add(method.Name, list);
                         }
                         var runtimeMethod = new RuntimeMethod(method, this);
                         list.Add(runtimeMethod);
+                        idToMethods.Add(runtimeMethod.GetHashCode(), runtimeMethod);
                     }
 
-                    foreach (var list in methods.Values)
+                    foreach (var list in nameToMethods.Values)
                     {
                         list.Trim();
                     }
 
-                    _methods = methods;
+                    isMethodsInit = true;
                 }
             }
 
@@ -111,8 +113,9 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
 
             public override ILMethod GetDeclaredMethod(string name, ILType[] genericArguments, ILType[] parameterTypes, ILType returnType)
             {
+                CheckInitMethods();
                 FastList<RuntimeMethod> list;
-                if (!Methods.TryGetValue(name, out list))
+                if (!nameToMethods.TryGetValue(name, out list))
                 {
                     return null;
                 }
@@ -126,6 +129,17 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
                 return null;
             }
 
+            internal override ILMethod GetDeclaredMethod(MethodReference reference)
+            {
+                CheckInitMethods();
+                return null;
+            }
+
+            internal override ILMethod GetDeclaredMethod(int hash)
+            {
+                CheckInitMethods();
+                return idToMethods[hash];
+            }
         }
     }
 }

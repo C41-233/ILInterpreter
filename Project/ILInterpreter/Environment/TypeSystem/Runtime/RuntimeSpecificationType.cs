@@ -41,6 +41,15 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
                 return null;
             }
 
+            internal override ILMethod GetDeclaredMethod(MethodReference reference)
+            {
+                return null;
+            }
+
+            internal override ILMethod GetDeclaredMethod(int hash)
+            {
+                return null;
+            }
         }
     }
 }

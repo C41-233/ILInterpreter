@@ -65,19 +65,6 @@ namespace ILInterpreter.Environment
             }
         }
 
-        public ILType GetType(int id)
-        {
-            lock (this)
-            {
-                ILType type;
-                if (IdToType.TryGetValue(id, out type))
-                {
-                    return type;
-                }
-            }
-            return null;
-        }
-
         private ILType CacheTypeInternal(ILType type)
         {
             var clrType = type as CLRType;

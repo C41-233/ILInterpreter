@@ -9,6 +9,19 @@ namespace ILInterpreter.Environment
     public sealed partial class ILEnvironment
     {
 
+        internal ILType GetType(int id)
+        {
+            lock (this)
+            {
+                ILType type;
+                if (IdToType.TryGetValue(id, out type))
+                {
+                    return type;
+                }
+            }
+            return null;
+        }
+
         internal ILType GetType(TypeReference reference)
         {
             ILType type;

@@ -2,6 +2,7 @@
 using ILInterpreter.Environment.TypeSystem;
 using ILInterpreter.Environment.TypeSystem.CLR;
 using ILInterpreter.Support;
+using Mono.Cecil;
 
 namespace ILInterpreter.Environment.Method.CLR
 {
@@ -26,6 +27,11 @@ namespace ILInterpreter.Environment.Method.CLR
         public override string Name
         {
             get { return methodInfo.Name; }
+        }
+
+        public override bool HasThis
+        {
+            get { return !methodInfo.IsStatic; }
         }
 
         private FastList<MethodParameter> parameters;
@@ -104,6 +110,27 @@ namespace ILInterpreter.Environment.Method.CLR
                 return false;
             }
 
+            return true;
+        }
+
+        internal override bool Matches(MethodReference reference)
+        {
+            if (ReturnType != Environment.GetType(reference.ReturnType))
+            {
+                return false;
+            }
+            var referenceParameters = reference.Parameters;
+            if (ParametersCount != referenceParameters.Count)
+            {
+                return false;
+            }
+            for (var i = 0; i < referenceParameters.Count; i++)
+            {
+                if (Parameters[i].ParameterType != Environment.GetType(referenceParameters[i].ParameterType))
+                {
+                    return false;
+                }
+            }
             return true;
         }
 

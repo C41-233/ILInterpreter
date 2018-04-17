@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ILInterpreter.Environment.Method;
 using ILInterpreter.Support;
+using Mono.Cecil;
 
 namespace ILInterpreter.Environment.TypeSystem
 {
@@ -179,6 +180,10 @@ namespace ILInterpreter.Environment.TypeSystem
         #region Methods
 
         public abstract ILMethod GetDeclaredMethod(string name, ILType[] genericArguments, ILType[] parameterTypes, ILType returnType);
+
+        internal abstract ILMethod GetDeclaredMethod(MethodReference reference);
+
+        internal abstract ILMethod GetDeclaredMethod(int hash);
 
         #endregion
 

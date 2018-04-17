@@ -4,6 +4,7 @@ using System.Reflection;
 using ILInterpreter.Environment.Method;
 using ILInterpreter.Environment.Method.CLR;
 using ILInterpreter.Support;
+using Mono.Cecil;
 
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
 namespace ILInterpreter.Environment.TypeSystem.CLR
@@ -194,39 +195,39 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
         #endregion
 
         #region Methods
-        private Dictionary<string, FastList<CLRMethod>> _methods;
+        private Dictionary<string, FastList<CLRMethod>> methods;
+        private Dictionary<int, CLRMethod> idToMethhods;
+        private bool isMethodsInit;
 
-        private Dictionary<string, FastList<CLRMethod>> Methods
+        private void CheckInitMethods()
         {
-            get
+            if (isMethodsInit)
             {
-                if (_methods == null)
-                {
-                    InitMethods();
-                }
-                return _methods;
+                return;
             }
-        }
-
-        private void InitMethods()
-        {
             lock (Environment)
             {
-                if (_methods != null)
+                if (isMethodsInit)
                 {
                     return;
                 }
-                var methods = new Dictionary<string, FastList<CLRMethod>>();
-                var clrMethods = typeForCLR.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.NonPublic | BindingFlags.Public);
-                foreach (var method in clrMethods)
+
+                methods = new Dictionary<string, FastList<CLRMethod>>();
+                idToMethhods = new Dictionary<int, CLRMethod>();
+
+                var clrMethods = typeForCLR.GetMethods();
+                foreach (var clrMethod in clrMethods)
                 {
                     FastList<CLRMethod> list;
-                    if (!methods.TryGetValue(method.Name, out list))
+                    if (!methods.TryGetValue(clrMethod.Name, out list))
                     {
                         list = new FastList<CLRMethod>();
-                        methods.Add(method.Name, list);
+                        methods.Add(clrMethod.Name, list);
                     }
-                    list.Add(new CLRMethod(method, this));
+
+                    var method = new CLRMethod(clrMethod, this);
+                    list.Add(method);
+                    idToMethhods.Add(method.GetHashCode(), method);
                 }
 
                 foreach (var list in methods.Values)
@@ -234,7 +235,7 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
                     list.Trim();
                 }
 
-                _methods = methods;
+                isMethodsInit = true;
             }
         }
 
@@ -243,6 +244,31 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
             //todo
             return null;
         }
+
+        internal override ILMethod GetDeclaredMethod(MethodReference reference)
+        {
+            CheckInitMethods();
+            FastList<CLRMethod> list;
+            if (!methods.TryGetValue(reference.Name, out list))
+            {
+                return null;
+            }
+            foreach (var method in list)
+            {
+                if (method.Matches(reference))
+                {
+                    return method;
+                }
+            }
+            return null;
+        }
+
+        internal override ILMethod GetDeclaredMethod(int hash)
+        {
+            CheckInitMethods();
+            return idToMethhods[hash];
+        }
+
         #endregion
 
 
