@@ -10,6 +10,7 @@ using ILInterpreter.Interpreter;
 using ILInterpreter.Support;
 using Mono.Cecil;
 
+// ReSharper disable InconsistentlySynchronizedField
 namespace ILInterpreter.Environment
 {
     public sealed partial class ILEnvironment
@@ -20,6 +21,30 @@ namespace ILInterpreter.Environment
         private readonly TypeNameDictionary NameToTypes = new TypeNameDictionary();
         private readonly Dictionary<int, ILType> TypeReferenceToTypes = new Dictionary<int, ILType>();
         #endregion
+
+        public ILEnvironment()
+        {
+            Void = GetType(typeof(void));
+            Object = GetType(typeof(object));
+            String = GetType(typeof(string));
+
+            Byte = GetType(typeof(byte));
+            SByte = GetType(typeof(sbyte));
+            Char = GetType(typeof(char));
+            Short = GetType(typeof(short));
+            UShort = GetType(typeof(ushort));
+            Int = GetType(typeof(int));
+            UInt = GetType(typeof(uint));
+            Long = GetType(typeof(long));
+            ULong = GetType(typeof(ulong));
+            Float = GetType(typeof(float));
+            Double = GetType(typeof(double));
+            Decimal = GetType(typeof(decimal));
+
+            ValueType = GetType(typeof(ValueType));
+            Enum = GetType(typeof(Enum));
+            Array = GetType(typeof(Array));
+        }
 
         #region Type System
 
@@ -114,6 +139,11 @@ namespace ILInterpreter.Environment
 
         internal object Invoke(RuntimeMethod method, object instance, object[] parameters)
         {
+            if (parameters == null)
+            {
+                parameters = Array<object>.Empty;
+            }
+
             RuntimeInterpreter interpreter = null;
             lock (interpreters)
             {

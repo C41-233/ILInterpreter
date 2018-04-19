@@ -7,9 +7,13 @@ namespace TestCase
 
         public static void Run1()
         {
-            Console.WriteLine("Hello world!");
+            Console.WriteLine("Hello World!");
         }
 
+        public static string Run2()
+        {
+            return "Hello world!!";
+        }
 
         public class TestClass
         {

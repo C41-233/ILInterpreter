@@ -9,11 +9,11 @@ namespace ILInterpreter.Environment.Method.CLR
     internal sealed class CLRMethod : ILMethod
     {
 
-        private readonly MethodInfo methodInfo;
+        private readonly MethodInfo method;
 
         public CLRMethod(MethodInfo method, CLRType type)
         {
-            methodInfo = method;
+            this.method = method;
             declaredType = type;
         }
 
@@ -26,12 +26,12 @@ namespace ILInterpreter.Environment.Method.CLR
 
         public override string Name
         {
-            get { return methodInfo.Name; }
+            get { return method.Name; }
         }
 
         public override bool HasThis
         {
-            get { return !methodInfo.IsStatic; }
+            get { return !method.IsStatic; }
         }
 
         private FastList<MethodParameter> parameters;
@@ -52,7 +52,7 @@ namespace ILInterpreter.Environment.Method.CLR
                     return;
                 }
 
-                var parameterInfos = methodInfo.GetParameters();
+                var parameterInfos = method.GetParameters();
                 parameters = new FastList<MethodParameter>(parameterInfos.Length);
                 foreach (var parameterInfo in parameterInfos)
                 {
@@ -61,7 +61,7 @@ namespace ILInterpreter.Environment.Method.CLR
                     ));
                 }
 
-                returnType = Environment.GetType(methodInfo.ReturnType);
+                returnType = Environment.GetType(method.ReturnType);
 
                 isDefinitionInit = true;
             }
@@ -136,7 +136,7 @@ namespace ILInterpreter.Environment.Method.CLR
 
         public override object Invoke(object instance, params object[] parameters)
         {
-            return methodInfo.Invoke(instance, parameters);
+            return method.Invoke(instance, parameters);
         }
     }
 }

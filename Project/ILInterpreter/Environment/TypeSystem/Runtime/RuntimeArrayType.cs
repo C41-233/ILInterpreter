@@ -84,10 +84,9 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
                 }
             }
 
-            private ILType baseType;
             public override ILType BaseType
             {
-                get { return baseType ?? (baseType = Environment.GetType<Array>()); }
+                get { return Environment.Array; }
             }
 
         }

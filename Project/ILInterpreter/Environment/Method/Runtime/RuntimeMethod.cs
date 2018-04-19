@@ -93,7 +93,7 @@ namespace ILInterpreter.Environment.Method.Runtime
             }
             if (returnType == null)
             {
-                returnType = Environment.GetType(typeof(void));
+                returnType = Environment.Void;
             }
 
             if (parameters.Count != parameterTypes.Length)

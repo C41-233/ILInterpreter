@@ -41,6 +41,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Environment\ILEnvironment_TypeDefine.cs" />
     <Compile Include="Environment\Method\CLR\CLRMethod.cs" />
     <Compile Include="Environment\Method\ILMethod.cs" />
     <Compile Include="Environment\Method\MethodParameter.cs" />
@@ -57,10 +58,11 @@
     <Compile Include="Environment\TypeSystem\Runtime\RuntimeArrayType.cs" />
     <Compile Include="Environment\TypeSystem\Runtime\RuntimeByRefType.cs" />
     <Compile Include="Environment\TypeSystem\Runtime\RuntimeDirectType.cs" />
+    <Compile Include="Environment\TypeSystem\Runtime\RuntimeGenericDefinitionType.cs" />
     <Compile Include="Environment\TypeSystem\Runtime\RuntimePointerType.cs" />
     <Compile Include="Environment\TypeSystem\Runtime\RuntimeDefinitionType.cs" />
     <Compile Include="Environment\TypeSystem\Runtime\RuntimeSpecificationType.cs" />
-    <Compile Include="Environment\TypeSystem\Runtime\RuntimeTypeGenericParameterType.cs" />
+    <Compile Include="Environment\TypeSystem\Runtime\RuntimeGenericParameterType.cs" />
     <Compile Include="Interpreter\RuntimeInterpreter.cs" />
     <Compile Include="Interpreter\Stack\RuntimeStack.cs" />
     <Compile Include="Interpreter\Stack\StackObject.cs" />

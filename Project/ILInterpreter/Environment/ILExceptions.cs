@@ -17,4 +17,14 @@ namespace ILInterpreter.Environment
         }
 
     }
+
+    public class ILInvokeException : Exception
+    {
+
+        public ILInvokeException(string msg) : base(msg)
+        {
+            
+        }
+
+    }
 }

@@ -111,7 +111,7 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
 
             #endregion
 
-            public override ILMethod GetDeclaredMethod(string name, ILType[] genericArguments, ILType[] parameterTypes, ILType returnType)
+            public sealed override ILMethod GetDeclaredMethod(string name, ILType[] genericArguments, ILType[] parameterTypes, ILType returnType)
             {
                 CheckInitMethods();
                 FastList<RuntimeMethod> list;
@@ -129,13 +129,13 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
                 return null;
             }
 
-            internal override ILMethod GetDeclaredMethod(MethodReference reference)
+            internal sealed override ILMethod GetDeclaredMethod(MethodReference reference)
             {
                 CheckInitMethods();
                 return null;
             }
 
-            internal override ILMethod GetDeclaredMethod(int hash)
+            internal sealed override ILMethod GetDeclaredMethod(int hash)
             {
                 CheckInitMethods();
                 return idToMethods[hash];

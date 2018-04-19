@@ -1,10 +1,7 @@
-﻿using System.CodeDom;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
+﻿using System.Collections.Generic;
 using ILInterpreter.Environment;
 using ILInterpreter.Environment.Method.Runtime;
 using ILInterpreter.Interpreter.Stack;
-using ILInterpreter.Support;
 using Mono.Cecil.Cil;
 using Instruction = ILInterpreter.Environment.Method.Runtime.Instruction;
 
@@ -12,13 +9,13 @@ namespace ILInterpreter.Interpreter
 {
     internal sealed unsafe class RuntimeInterpreter
     {
-        private ILEnvironment iLEnvironment;
+        private readonly ILEnvironment environment;
 
         private readonly RuntimeStack stack;
 
-        public RuntimeInterpreter(ILEnvironment iLEnvironment)
+        public RuntimeInterpreter(ILEnvironment environment)
         {
-            this.iLEnvironment = iLEnvironment;
+            this.environment = environment;
             stack = new RuntimeStack();
             clrArguments.Add(0, null);
         }
@@ -34,13 +31,15 @@ namespace ILInterpreter.Interpreter
                 esp = StackObject.PushObject(esp, mObjects, instance);
             }
 
-            //push parameters
-            if (parameters != null)
+            if (method.ParametersCount != parameters.Length)
             {
-                foreach (var parameter in parameters)
-                {
-                    esp = StackObject.PushObject(esp, mObjects, parameter);
-                }
+                throw new ILInvokeException(string.Format("invoke method {0} parameters count mismatch expected={1} actual={2}", method.Name, method.ParametersCount, parameters.Length));
+            }
+
+            //push parameters
+            foreach (var parameter in parameters)
+            {
+                esp = StackObject.PushObject(esp, mObjects, parameter);
             }
 
             bool unhandledException;
@@ -51,7 +50,7 @@ namespace ILInterpreter.Interpreter
 
         private StackObject* Execute(RuntimeMethod method, StackObject* esp, out bool unhandledException)
         {
-            var env = method.Environment;
+            var env = environment;
             var mObjects = stack.ManagedObjects;
             var body = method.Body;
             var localVariableCount = method.LocalVariableCount;

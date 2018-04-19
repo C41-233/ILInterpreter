@@ -7,10 +7,10 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
     internal abstract partial class RuntimeType
     {
 
-        private sealed class RuntimeTypeGenericParameterType : RuntimeDefinitonType
+        private sealed class RuntimeGenericParameterType : RuntimeDefinitonType
         {
 
-            public RuntimeTypeGenericParameterType(TypeDefinition definition, ILEnvironment env) : base(definition, env)
+            public RuntimeGenericParameterType(TypeDefinition definition, ILEnvironment env) : base(definition, env)
             {
             }
 
@@ -29,8 +29,12 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
                 get { return DeclaringType.FullQulifiedName + "!" + GenericParameterPosition; }
             }
 
-            private ILType declaringType;
+            public override bool IsGenericParameter
+            {
+                get { return true; }
+            }
 
+            private ILType declaringType;
             public override ILType DeclaringType
             {
                 get
