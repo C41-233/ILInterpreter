@@ -124,5 +124,21 @@ namespace ILInterpreter.Environment.Method.Runtime
         {
             return Environment.Invoke(this, instance, parameters);
         }
+
+        public override bool IsMethod
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override bool IsConstructor
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override bool IsStaticConstructor
+        {
+            get { throw new NotImplementedException(); }
+        }
+
     }
 }

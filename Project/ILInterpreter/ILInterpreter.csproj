@@ -42,7 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Environment\ILEnvironment_TypeDefine.cs" />
+    <Compile Include="Environment\Method\CLR\CLRConstructor.cs" />
     <Compile Include="Environment\Method\CLR\CLRMethod.cs" />
+    <Compile Include="Environment\Method\CLR\CLRGeneralMethod.cs" />
     <Compile Include="Environment\Method\ILMethod.cs" />
     <Compile Include="Environment\Method\MethodParameter.cs" />
     <Compile Include="Environment\Method\Runtime\Instruction.cs" />

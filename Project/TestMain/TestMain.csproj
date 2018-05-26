@@ -49,6 +49,7 @@
     <Compile Include="TestCase\TestCase01.cs" />
     <Compile Include="TestCase\TestCase02.cs" />
     <Compile Include="TestCase\TestCase03.cs" />
+    <Compile Include="TestCase\TestCase04.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

@@ -2,18 +2,17 @@
 using ILInterpreter.Environment.TypeSystem;
 using ILInterpreter.Environment.TypeSystem.CLR;
 using ILInterpreter.Support;
-using Mono.Cecil;
 
 namespace ILInterpreter.Environment.Method.CLR
 {
-    internal sealed class CLRMethod : CLRGeneralMethod
+    internal sealed class CLRConstructor : CLRGeneralMethod
     {
 
-        private readonly MethodInfo method;
+        private readonly ConstructorInfo constructor;
 
-        public CLRMethod(MethodInfo method, CLRType type)
+        public CLRConstructor(ConstructorInfo constructor, CLRType type)
         {
-            this.method = method;
+            this.constructor = constructor;
             declaringType = type;
         }
 
@@ -26,22 +25,22 @@ namespace ILInterpreter.Environment.Method.CLR
 
         public override string Name
         {
-            get { return method.Name; }
+            get { return ConstructorName; }
         }
 
         public override bool HasThis
         {
-            get { return !method.IsStatic; }
+            get { return true; }
         }
 
         public override bool IsMethod
         {
-            get { return true; }
+            get { return false; }
         }
 
         public override bool IsConstructor
         {
-            get { return false; }
+            get { return true; }
         }
 
         public override bool IsStaticConstructor
@@ -50,9 +49,25 @@ namespace ILInterpreter.Environment.Method.CLR
         }
 
         private FastList<MethodParameter> parameters;
-        private ILType returnType;
 
         private bool isDefinitionInit;
+        
+        public override IListView<MethodParameter> Parameters
+        {
+            get
+            {
+                CheckDefinitionInit();
+                return parameters;
+            }
+        }
+
+        public override ILType ReturnType
+        {
+            get
+            {
+                return Environment.Void;
+            }
+        }
 
         private void CheckDefinitionInit()
         {
@@ -67,42 +82,22 @@ namespace ILInterpreter.Environment.Method.CLR
                     return;
                 }
 
-                var parameterInfos = method.GetParameters();
+                var parameterInfos = constructor.GetParameters();
                 parameters = new FastList<MethodParameter>(parameterInfos.Length);
                 foreach (var parameterInfo in parameterInfos)
                 {
                     parameters.Add(new MethodParameter(
-                        Environment.GetType(parameterInfo.ParameterType)    
+                        Environment.GetType(parameterInfo.ParameterType)
                     ));
                 }
-
-                returnType = Environment.GetType(method.ReturnType);
 
                 isDefinitionInit = true;
             }
         }
 
-        public override IListView<MethodParameter> Parameters
-        {
-            get
-            {
-                CheckDefinitionInit();
-                return parameters;
-            }
-        }
-
-        public override ILType ReturnType
-        {
-            get
-            {
-                CheckDefinitionInit();
-                return returnType;
-            }
-        }
-
         public override object Invoke(object instance, params object[] parameters)
         {
-            return method.Invoke(instance, parameters);
+            return constructor.Invoke(parameters);
         }
     }
 }

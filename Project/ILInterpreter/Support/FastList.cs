@@ -9,9 +9,11 @@ namespace ILInterpreter.Support
             return GetEnumerator();
         }
 
-        public void Push(T value)
+        public int Push(T value)
         {
+            var count = Count;
             Add(value);
+            return count;
         }
 
         public T Pop()

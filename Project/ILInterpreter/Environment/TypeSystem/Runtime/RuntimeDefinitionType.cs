@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using ILInterpreter.Environment.Method;
+using ILInterpreter.Environment.Method.CLR;
 using ILInterpreter.Environment.Method.Runtime;
 using ILInterpreter.Support;
 using Mono.Cecil;
@@ -132,6 +133,18 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
             internal sealed override ILMethod GetDeclaredMethod(MethodReference reference)
             {
                 CheckInitMethods();
+                FastList<RuntimeMethod> list;
+                if (!nameToMethods.TryGetValue(reference.Name, out list))
+                {
+                    return null;
+                }
+                foreach (var method in list)
+                {
+                    if (method.Matches(reference))
+                    {
+                        return method;
+                    }
+                }
                 return null;
             }
 
@@ -139,6 +152,11 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
             {
                 CheckInitMethods();
                 return idToMethods[hash];
+            }
+
+            internal override ILMethod GetVirtualMethod(int hash)
+            {
+                return GetDeclaredMethod(hash);
             }
         }
     }

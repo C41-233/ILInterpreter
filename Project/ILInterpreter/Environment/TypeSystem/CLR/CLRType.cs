@@ -195,8 +195,8 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
         #endregion
 
         #region Methods
-        private Dictionary<string, FastList<CLRMethod>> methods;
-        private Dictionary<int, CLRMethod> idToMethhods;
+        private Dictionary<string, FastList<CLRGeneralMethod>> methods;
+        private Dictionary<int, CLRGeneralMethod> idToMethhods;
         private bool isMethodsInit;
 
         private void CheckInitMethods()
@@ -212,22 +212,33 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
                     return;
                 }
 
-                methods = new Dictionary<string, FastList<CLRMethod>>();
-                idToMethhods = new Dictionary<int, CLRMethod>();
+                methods = new Dictionary<string, FastList<CLRGeneralMethod>>();
+                idToMethhods = new Dictionary<int, CLRGeneralMethod>();
 
                 var clrMethods = typeForCLR.GetMethods();
                 foreach (var clrMethod in clrMethods)
                 {
-                    FastList<CLRMethod> list;
+                    FastList<CLRGeneralMethod> list;
                     if (!methods.TryGetValue(clrMethod.Name, out list))
                     {
-                        list = new FastList<CLRMethod>();
+                        list = new FastList<CLRGeneralMethod>();
                         methods.Add(clrMethod.Name, list);
                     }
 
                     var method = new CLRMethod(clrMethod, this);
                     list.Add(method);
                     idToMethhods.Add(method.GetHashCode(), method);
+                }
+
+                {
+                    var list = new FastList<CLRGeneralMethod>();
+                    methods.Add(ILMethod.ConstructorName, list);
+                    foreach (var constructor in typeForCLR.GetConstructors())
+                    {
+                       var method = new CLRConstructor(constructor, this);
+                       list.Add(method);
+                       idToMethhods.Add(method.GetHashCode(), method);
+                    }
                 }
 
                 foreach (var list in methods.Values)
@@ -248,7 +259,7 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
         internal override ILMethod GetDeclaredMethod(MethodReference reference)
         {
             CheckInitMethods();
-            FastList<CLRMethod> list;
+            FastList<CLRGeneralMethod> list;
             if (!methods.TryGetValue(reference.Name, out list))
             {
                 return null;
@@ -269,6 +280,10 @@ namespace ILInterpreter.Environment.TypeSystem.CLR
             return idToMethhods[hash];
         }
 
+        internal override ILMethod GetVirtualMethod(int hash)
+        {
+            return GetDeclaredMethod(hash);
+        }
         #endregion
 
 

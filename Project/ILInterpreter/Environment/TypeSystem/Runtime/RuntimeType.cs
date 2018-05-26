@@ -134,7 +134,7 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
             {
                 return new RuntimeGenericParameterType(definition, env);
             }
-            else if (definition.HasGenericParameters)
+            if (definition.HasGenericParameters)
             {
                 return new RuntimeGenericDefinitionType(definition, env);
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Runtime.InteropServices;
 using ILInterpreter.Environment;
+using ILInterpreter.Environment.TypeSystem;
 using TestMain.Engine;
 using TestMain.TestCase;
 
@@ -22,16 +23,9 @@ namespace TestMain
             var env = new ILEnvironment();
             env.LoadAssemblyFromFile(Constant.TestCaseDll);
             var type = env.GetType("TestCase.Test01");
-            {
-                var method = type.GetDeclaredMethod("Run1", null, null, null);
-                var rst = method.Invoke(null);
-                Console.WriteLine(rst);
-            }
-            {
-                var method = type.GetDeclaredMethod("Run2", null, null, env.String);
-                var rst = method.Invoke(null);
-                Console.WriteLine(rst);
-            }
+            var method = type.GetDeclaredMethod("Run3", null, new ILType[] {env.Int}, env.Int);
+            Console.WriteLine(method.Invoke(null, 10));
+            //Console.WriteLine(typeof(object).GetConstructors()[0].Invoke(null));
         }
 
     }

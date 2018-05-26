@@ -50,6 +50,11 @@ namespace ILInterpreter.Environment.TypeSystem.Runtime
             {
                 return null;
             }
+
+            internal override ILMethod GetVirtualMethod(int hash)
+            {
+                return GetDeclaredMethod(hash);
+            }
         }
     }
 }

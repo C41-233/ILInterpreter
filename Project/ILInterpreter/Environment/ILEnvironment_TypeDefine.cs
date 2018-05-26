@@ -1,4 +1,5 @@
-﻿using ILInterpreter.Environment.TypeSystem;
+﻿using ILInterpreter.Environment.Method;
+using ILInterpreter.Environment.TypeSystem;
 
 namespace ILInterpreter.Environment
 {
@@ -40,6 +41,8 @@ namespace ILInterpreter.Environment
         public ILType Enum { get; private set; }
 
         public ILType Array { get; private set; }
+
+        public ILMethod ObjectConstructor { get; private set; }
 
     }
 }

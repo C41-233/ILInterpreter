@@ -12,7 +12,13 @@ namespace TestCase
 
         public static string Run2()
         {
-            return "Hello world!!";
+            return "Hello World!";
+        }
+
+        public static int Run3(int val)
+        {
+            var obj = new TestClass();
+            return obj.Calc(val);
         }
 
         public class TestClass

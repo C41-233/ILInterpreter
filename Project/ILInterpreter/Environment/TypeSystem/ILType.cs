@@ -185,6 +185,12 @@ namespace ILInterpreter.Environment.TypeSystem
 
         internal abstract ILMethod GetDeclaredMethod(int hash);
 
+        internal abstract ILMethod GetVirtualMethod(int hash);
+
+        internal ILMethod GetConstructor(params ILType[] parameterTypes)
+        {
+            return GetDeclaredMethod(ILMethod.ConstructorName, null, parameterTypes, null);
+        }
         #endregion
 
     }

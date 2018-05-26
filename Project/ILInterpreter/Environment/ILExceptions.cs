@@ -8,12 +8,10 @@ namespace ILInterpreter.Environment
 
         public ILTypeLoadException(string msg) : base(msg)
         {
-            
         }
 
         public ILTypeLoadException(string msg, Exception e) : base(msg, e)
         {
-            
         }
 
     }
@@ -21,9 +19,13 @@ namespace ILInterpreter.Environment
     public class ILInvokeException : Exception
     {
 
+        public ILInvokeException(string msg, params object[] args)
+            : this(string.Format(msg, args))
+        {
+        }
+
         public ILInvokeException(string msg) : base(msg)
         {
-            
         }
 
     }

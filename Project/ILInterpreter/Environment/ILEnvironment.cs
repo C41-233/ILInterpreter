@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using ILInterpreter.Environment.Method;
 using ILInterpreter.Environment.Method.Runtime;
 using ILInterpreter.Environment.TypeSystem;
 using ILInterpreter.Environment.TypeSystem.CLR;
@@ -44,6 +45,8 @@ namespace ILInterpreter.Environment
             ValueType = GetType(typeof(ValueType));
             Enum = GetType(typeof(Enum));
             Array = GetType(typeof(Array));
+
+            ObjectConstructor = Object.GetConstructor();
         }
 
         #region Type System
@@ -165,7 +168,6 @@ namespace ILInterpreter.Environment
             {
                 lock (interpreters)
                 {
-                    interpreter.Clear();
                     interpreters.Push(interpreter);
                 }
             }

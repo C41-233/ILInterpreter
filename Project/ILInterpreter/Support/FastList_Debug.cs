@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ILInterpreter.Support
 {
@@ -56,6 +57,11 @@ namespace ILInterpreter.Support
         public void Clear()
         {
             list.Clear();
+        }
+
+        public void RemoveFrom(int index)
+        {
+            list.RemoveRange(index, list.Count - index);
         }
     }
 

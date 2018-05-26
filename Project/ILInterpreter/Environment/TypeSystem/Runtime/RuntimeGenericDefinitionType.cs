@@ -1,5 +1,6 @@
 ﻿using System;
 using ILInterpreter.Interpreter;
+using ILInterpreter.Interpreter.Type;
 using Mono.Cecil;
 
 namespace ILInterpreter.Environment.TypeSystem.Runtime

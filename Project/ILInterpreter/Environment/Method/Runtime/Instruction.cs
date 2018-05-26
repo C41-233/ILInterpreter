@@ -16,9 +16,6 @@ namespace ILInterpreter.Environment.Method.Runtime
         public Code Code;
 
         [FieldOffset(4)]
-        public sbyte Int8;
-
-        [FieldOffset(4)]
         public int Int32;
 
         [FieldOffset(4)]
@@ -87,6 +84,7 @@ namespace ILInterpreter.Environment.Method.Runtime
                     #endregion
 
                 #region call
+                case Code.Newobj:
                 case Code.Call:
                     var methodReference = (MethodReference) operand;
                     var type = env.GetType(methodReference.DeclaringType);
